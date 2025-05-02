@@ -3,6 +3,21 @@ export interface Discipline {
     score: number;
 }
 
+export interface Backgrounds {
+    name: string;
+    score: number;
+}
+export interface Merits {
+    name: string;
+    type: string;
+    score: number;
+}
+export interface Flaws {
+    name: string;
+    type: string;
+    score: number;
+}
+
 export interface Clan{
     discipline1 : string;
     discipline2 : string;
@@ -45,6 +60,9 @@ export interface Character{
     demeanor : string;
     dexterity : number;
     disciplines: Discipline[];
+    backgrounds: Backgrounds[];
+    merits: Merits[];
+    flaws: Flaws[];
     empathy : number;
     enigmas : number;
     etiquette : number;

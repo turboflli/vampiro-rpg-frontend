@@ -6,7 +6,7 @@ export const initialCharacter: Character = {
     name: "",
     clanId: 0,
     roadId: 0,
-    generation: 10,
+    generation: 12,
     sire: "",
     nature: "",
     demeanor: "",
@@ -20,5 +20,5 @@ export const initialCharacter: Character = {
     clanDiscipline1: 0, clanDiscipline2: 0, clanDiscipline3: 0,
     conscience: 1, courage: 1, self_control: 1,
     road_value: 1, willpower: 5, bloodpool: 10, experience: 0,
-    disciplines: []
+    disciplines: [], backgrounds: [], merits: [], flaws: [],
 };

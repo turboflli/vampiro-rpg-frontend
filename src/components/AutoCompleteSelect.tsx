@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Search } from "lucide-react";
 
 interface AutoCompleteSelectProps<T> {
   label: string;
@@ -41,18 +42,22 @@ export default function AutoCompleteSelect<T extends { id: number }>({
   }, []);
 
   return (
-    <div className="mb-4" ref={wrapperRef}>
+    <div className="relative mb-4" ref={wrapperRef}>
       <label className="block font-medium mb-1">{label}</label>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        onFocus={() => setShowList(true)}
-        className="border p-2 w-full rounded bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Digite para filtrar..."
-      />
+      <div className="relative mb-2">
+        <Search className="absolute top-3 right-2 text-gray-400" size={16} />
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onFocus={() => setShowList(true)}
+          className="border p-2 w-full rounded bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Digite para filtrar..."
+        />
+      </div>
+      
       {showList && (
-        <ul className="border bg-white mt-1 max-h-48 overflow-auto rounded shadow text-sm">
+        <ul className="absolute z-10 border bg-white mt-1 max-h-48 overflow-auto rounded shadow text-sm w-full">
           {filtered.map((item) => (
             <li
               key={item.id}
