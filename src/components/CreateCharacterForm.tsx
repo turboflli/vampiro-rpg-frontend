@@ -1,14 +1,23 @@
 import { useState, useEffect } from "react";
-import { getAllClans, getAllRoads, createCharacter } from "../services/characterService";
+import { getAllClans, getAllRoads, createCharacter, getCharacter } from "../services/characterService";
 import { initialCharacter } from "../types/initialCharacter";
 import type { Backgrounds, Clan, Discipline, Flaws, Merits, Road } from "../types/character";
 import DotRating from "./DotRating";
 import AutoCompleteSelect from "./AutoCompleteSelect";
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Trash, Plus, Undo2 } from 'lucide-react';
 import SquareRating from "./SquareRating";
 import TraitTypeSelect from "./TraitTypeSelect";
+import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-export default function CreateCharacterForm() {
+interface Props {
+    id?: number;
+}
+
+export default function CreateCharacterForm({ id }: Props) {
+
+    const navigate = useNavigate();
+
     const [form, setForm] = useState(initialCharacter);
     const [clans, setClans] = useState<Clan[]>([]);
     const [roads, setRoads] = useState<Road[]>([]);
@@ -24,14 +33,35 @@ export default function CreateCharacterForm() {
     const [showTraits, setShowTraits] = useState(true);
 
   useEffect(() => {
+    // Load clans and roads first
     getAllClans()
       .then(data => setClans(data))
       .catch(() => alert("Erro ao buscar clãs"));
-
     getAllRoads()
       .then(data => setRoads(data))
       .catch(() => alert("Erro ao buscar roads"));
   }, []);
+
+  // Handle character loading when id changes
+  useEffect(() => {
+    if (id) {
+      getCharacter(Number(id))
+        .then(data => {
+          setForm(data);
+          // Update selected clan and road after form is set
+          setSelectedClan(clans.find(clan => clan.id === data.clanId) || null);
+          setSelectedRoad(roads.find(road => road.id === data.roadId) || null);
+        })
+        .catch(() => alert("Erro ao buscar personagem"));
+    }
+  }, [id, clans, roads]);
+
+  // Update weakness when selectedClan changes
+  useEffect(() => {
+    if (selectedClan) {
+      setForm(prev => ({ ...prev, weakness: selectedClan.weakness }));
+    }
+  }, [selectedClan]);
 
   const update = (field: string, value: string | number) => {
     setForm(prev => ({ ...prev, [field]: value }));
@@ -132,6 +162,7 @@ export default function CreateCharacterForm() {
     createCharacter(form)
     .then(() => alert("Personagem criado com sucesso!"))
     .catch(() => alert("Erro ao criar personagem."));
+    navigate("/");
   };
 
   function encontrarLimiteMaximoDeSangue(): number {
@@ -157,7 +188,11 @@ export default function CreateCharacterForm() {
 
   return (
 
-<form onSubmit={handleSubmit} className="max-w-6xl mx-auto p-6 bg-white shadow-2xl rounded-lg mt-10 text-black">
+<form onSubmit={handleSubmit} className="max-w-6xl w-full p-6 bg-white shadow-2xl rounded-lg text-black ">
+      <Link to="/" className="flex items-center text-blue-600 hover:underline">
+        <Undo2 className="h-5 w-5 mr-2" />
+        Voltar
+      </Link>
       <h1 className="text-2xl font-bold text-center mb-6">Criar Personagem</h1>
 
       <div className="grid grid-cols-2 gap-4 mb-6">
@@ -319,11 +354,11 @@ export default function CreateCharacterForm() {
             <div key={i} className="flex gap-4 mb-2">
               <input className="border p-2 rounded bg-white flex-1" placeholder="Nome da disciplina" value={d.name} onChange={e => updateDisciplina(i, "name", e.target.value as unknown as number)} />
               <DotRating value={d.score} onChange={v => updateDisciplina(i, "score", v)} />
-              <button type="button" onClick={() => removeDisciplina(i)} className="text-red-500 font-bold">X</button>
+              <button type="button" onClick={() => removeDisciplina(i)} className="text-red-500"><Trash size={16} /></button>
             </div>
           ))}
         </div>
-        <button type="button" onClick={addDisciplina} className="mt-2 text-blue-600">+ Adicionar disciplina</button>
+        <button type="button" onClick={addDisciplina} className="mt-2 text-blue-600"><Plus size={16} /> Disciplina</button>
       </fieldset>
 
       <fieldset className="mt-6">
@@ -333,11 +368,11 @@ export default function CreateCharacterForm() {
             <div key={i} className="flex gap-4 mb-2">
               <input className="border p-2 rounded bg-white flex-1" placeholder="Nome do antecedente" value={d.name} onChange={e => updateBackground(i, "name", e.target.value as unknown as number)} />
               <DotRating value={d.score} onChange={v => updateBackground(i, "score", v)} maxValue={5}/>
-              <button type="button" onClick={() => removeBackground(i)} className="text-red-500 font-bold">X</button>
+              <button type="button" onClick={() => removeBackground(i)} className="text-red-500"><Trash size={16} /></button>
             </div>
           ))}
         </div>
-        <button type="button" onClick={addBackground} className="mt-2 text-blue-600">+ Adicionar antecedente</button>
+        <button type="button" onClick={addBackground} className="mt-2 text-blue-600"><Plus size={16} /> Antecedente</button>
       </fieldset>
 
       <fieldset className="mt-6">
@@ -387,24 +422,24 @@ export default function CreateCharacterForm() {
               {form.merits.map((m, i) => (
                 <div key={i} className="flex gap-2 mb-2">
                   <input className="border p-2 rounded bg-white flex-1" placeholder="Nome do mérito" value={m.name} onChange={e => updateMerit(i, "name", e.target.value as unknown as number)} />
-                  <TraitTypeSelect onChange={v => updateMerit(i, "type", v)} />
+                  <TraitTypeSelect onChange={v => updateMerit(i, "type", v)} value={m.type} />
                   <DotRating value={m.score} onChange={v => updateMerit(i, "score", v)} maxValue={5} />
-                  <button type="button" onClick={() => removeMerit(i)} className="text-red-500 font-bold">X</button>
+                  <button type="button" onClick={() => removeMerit(i)} className="text-red-500 font-bold"><Trash size={16} /></button>
                 </div>
               ))}
-              <button type="button" onClick={addMerit} className="mt-2 text-blue-600">+ Adicionar mérito</button>
+              <button type="button" onClick={addMerit} className="mt-2 text-blue-600"><Plus size={16} /> Mérito</button>
             </div>
             <div>
               <legend className="text-lg font-semibold mb-2 text-center">Defeitos</legend>
               {form.flaws.map((f, i) => (
                 <div key={i} className="flex gap-2 mb-2">
                   <input className="border p-2 rounded bg-white flex-1" placeholder="Nome do defeito" value={f.name} onChange={e => updateFlaw(i, "name", e.target.value as unknown as number)} />
-                  <TraitTypeSelect onChange={v => updateFlaw(i, "type", v)} />
+                  <TraitTypeSelect onChange={v => updateFlaw(i, "type", v)} value={f.type} />
                   <DotRating value={f.score} onChange={v => updateFlaw(i, "score", v)} maxValue={5} />
-                  <button type="button" onClick={() => removeFlaw(i)} className="text-red-500 font-bold">X</button>
+                  <button type="button" onClick={() => removeFlaw(i)} className="text-red-500 font-bold"><Trash size={16} /></button>
                 </div>
               ))}
-              <button type="button" onClick={addFlaw} className="mt-2 text-blue-600">+ Adicionar defeito</button>
+              <button type="button" onClick={addFlaw} className="mt-2 text-blue-600"><Plus size={16} /> Defeito</button>
             </div>
           </div>
         )}

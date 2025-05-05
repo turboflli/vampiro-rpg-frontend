@@ -1,10 +1,20 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import CharacterList from './components/CharacterList'
+import CharacterTab from './components/CharacterTab.tsx'
+import React from 'react'
+import './index.css';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<CharacterList />} />
+        <Route path="/create" element={<CharacterTab />} />
+        <Route path="/edit/:id" element={<CharacterTab />} />
+        <Route path="*" element={<div>404 - Página não encontrada</div>} />
+      </Routes>
+    </BrowserRouter>
+  </React.StrictMode>,
 )

@@ -1,4 +1,4 @@
-import { Character } from "../types/character";
+import { Character, CharacterSummary, Clan, Road } from "../types/character";
 
 export async function createCharacter(dto: Character) {
   const res = await fetch("/api/characters/save", {
@@ -18,6 +18,15 @@ export async function getCharacter(id: number) {
   return res.json() as Promise<Character>;
 }
 
+export async function getCharacterByName(name: string) {
+  const res = await fetch(`/api/characters/findByName/${name}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!res.ok) throw new Error("Erro ao buscar personagem");
+  return res.json() as Promise<CharacterSummary[]>;
+}
+
 export async function getAllCharacters() {
   const res = await fetch("/api/characters/all", {
     method: "GET",
@@ -27,13 +36,22 @@ export async function getAllCharacters() {
   return res.json() as Promise<Character[]>;
 }
 
+export async function getSummary() {
+  const res = await fetch("/api/characters/summary", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!res.ok) throw new Error("Erro ao buscar resumo");
+  return res.json() as Promise<CharacterSummary[]>;
+}
+
 export async function getAllClans() {
   const res = await fetch("/api/extra/clans", {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
   if (!res.ok) throw new Error("Erro ao buscar clãs");
-  return res.json() as Promise<any[]>;
+  return res.json() as Promise<Clan[]>;
 }
 
 export async function getAllRoads() {
@@ -42,5 +60,5 @@ export async function getAllRoads() {
     headers: { "Content-Type": "application/json" },
   });
   if (!res.ok) throw new Error("Erro ao buscar clãs");
-  return res.json() as Promise<any[]>;
+  return res.json() as Promise<Road[]>;
 }

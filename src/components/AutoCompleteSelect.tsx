@@ -29,7 +29,14 @@ export default function AutoCompleteSelect<T extends { id: number }>({
         getLabel(item).toLowerCase().includes(inputValue.toLowerCase())
       )
     );
-  }, [inputValue, options]);
+    if (value) {
+      const item = options.find((item) => item.id === value);
+      if (item) {
+        setInputValue(getLabel(item));
+        setShowList(false);
+      }
+    }
+  }, [inputValue, options, value]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

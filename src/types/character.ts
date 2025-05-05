@@ -38,6 +38,13 @@ export interface Road{
     useSelf_control : boolean;
 }
 
+export interface CharacterSummary{
+    name : string;
+    clanName : string;
+    roadName : string;
+    generation : number;
+}
+
 export interface Character{
     academics : number;
     alertness : number;
