@@ -1,7 +1,8 @@
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 import { Character, CharacterSummary, Clan, Road } from "../types/character";
 
 export async function createCharacter(dto: Character) {
-  const res = await fetch("/api/characters/save", {
+  const res = await fetch(`${API_BASE_URL}/characters/save`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(dto),
@@ -10,7 +11,7 @@ export async function createCharacter(dto: Character) {
 }
 
 export async function getCharacter(id: number) {
-  const res = await fetch(`/api/characters/find/${id}`, {
+  const res = await fetch(`${API_BASE_URL}/characters/find/${id}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -19,7 +20,7 @@ export async function getCharacter(id: number) {
 }
 
 export async function getCharacterByName(name: string) {
-  const res = await fetch(`/api/characters/findByName/${name}`, {
+  const res = await fetch(`${API_BASE_URL}/characters/findByName/${name}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -28,7 +29,7 @@ export async function getCharacterByName(name: string) {
 }
 
 export async function getAllCharacters() {
-  const res = await fetch("/api/characters/all", {
+  const res = await fetch(`${API_BASE_URL}/characters/all`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -37,7 +38,7 @@ export async function getAllCharacters() {
 }
 
 export async function getSummary() {
-  const res = await fetch("/api/characters/summary", {
+  const res = await fetch(`${API_BASE_URL}/characters/summary`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -46,7 +47,7 @@ export async function getSummary() {
 }
 
 export async function getAllClans() {
-  const res = await fetch("/api/extra/clans", {
+  const res = await fetch(`${API_BASE_URL}/extra/clans`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -55,7 +56,7 @@ export async function getAllClans() {
 }
 
 export async function getAllRoads() {
-  const res = await fetch("/api/extra/roads", {
+  const res = await fetch(`${API_BASE_URL}/extra/roads`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });

@@ -4,11 +4,14 @@ import CharacterList from './components/CharacterList'
 import CharacterTab from './components/CharacterTab.tsx'
 import React from 'react'
 import './index.css';
+import "./i18n"; // importa a configuração de idiomas
+import LanguageSelector from './components/LanguageSelector';
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
+    <LanguageSelector />
       <Routes>
         <Route path="/" element={<CharacterList />} />
         <Route path="/create" element={<CharacterTab />} />

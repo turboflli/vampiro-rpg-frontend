@@ -86,7 +86,7 @@ describe('AutoCompleteSelect', () => {
     fireEvent.focus(input);
     
     const item = screen.getByText('Item 1');
-    expect(item).toHaveAttribute('title', 'Description 1');
+    expect(item).toHaveAttribute('title', 'Descrição 1');
   });
 
   it('Atualiza o valor do input ao selecionar um item', () => {

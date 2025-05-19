@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Search } from "lucide-react";
+import { Delete, Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface AutoCompleteSelectProps<T> {
   label: string;
@@ -22,13 +23,9 @@ export default function AutoCompleteSelect<T extends { id: number }>({
   const [filtered, setFiltered] = useState<T[]>(options);
   const [showList, setShowList] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
-    setFiltered(
-      options.filter((item) =>
-        getLabel(item).toLowerCase().includes(inputValue.toLowerCase())
-      )
-    );
     if (value) {
       const item = options.find((item) => item.id === value);
       if (item) {
@@ -36,7 +33,15 @@ export default function AutoCompleteSelect<T extends { id: number }>({
         setShowList(false);
       }
     }
-  }, [inputValue, options, value]);
+  }, [options, value]);
+
+  useEffect(() => {
+    setFiltered(
+      options.filter((item) =>
+        getLabel(item).toLowerCase().includes(inputValue.toLowerCase())
+      )
+    );
+  }, [options,inputValue]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -50,7 +55,9 @@ export default function AutoCompleteSelect<T extends { id: number }>({
 
   return (
     <div className="relative mb-4" ref={wrapperRef}>
-      <label className="block font-medium mb-1">{label}</label>
+      <label className="block font-medium mb-1">{label}
+        {inputValue && <button onClick={() => {onChange(null); setInputValue("");}}><Delete className="absolute top-3 right-2 text-red-500" size={16} /></button>} 
+      </label>
       <div className="relative mb-2">
         <Search className="absolute top-3 right-2 text-gray-400" size={16} />
         <input
@@ -59,9 +66,10 @@ export default function AutoCompleteSelect<T extends { id: number }>({
           onChange={(e) => setInputValue(e.target.value)}
           onFocus={() => setShowList(true)}
           className="border p-2 w-full rounded bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Digite para filtrar..."
+          placeholder={t("search")}
         />
       </div>
+      
       
       {showList && (
         <ul className="absolute z-10 border bg-white mt-1 max-h-48 overflow-auto rounded shadow text-sm w-full">
@@ -79,7 +87,7 @@ export default function AutoCompleteSelect<T extends { id: number }>({
               {getLabel(item)}
             </li>
           ))}
-          {filtered.length === 0 && <li className="px-3 py-2 text-gray-400">Nenhuma opção encontrada</li>}
+          {filtered.length === 0 && <li className="px-3 py-2 text-gray-400">{t("noOptions")}</li>}
         </ul>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Dice1 } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 interface DiceRoll {
   value: number;
@@ -7,6 +8,7 @@ interface DiceRoll {
 }
 
 export default function DiceRollTable() {
+  const { t } = useTranslation();
   const [numberOfDice, setNumberOfDice] = useState(3);
   const [difficulty, setDifficulty] = useState(6);
   const [specialty, setSpecialty] = useState(false);
@@ -32,21 +34,21 @@ export default function DiceRollTable() {
     }
     successCount = successCount - botchesCount;
     if (successCount > 0) {
-      return <label className="text-green-600">{successCount} Sucesso(s)</label>;
+      return <label className="text-green-600">{successCount} {t("success")}</label>;
     } else if (botchesCount > 0) {
-      return <label className="text-red-600">Falha Crítica</label>;
+      return <label className="text-red-600">{botchesCount} {t("botch")}</label>;
     }
-    return <label className="text-red-600">Falha</label>;
+    return <label className="text-red-600">{t("failure")}</label>;
   };
 
   return (
     <div className="w-66 max-h-[500px] overflow-auto bg-white shadow-2xl rounded-lg text-black p-4 self-start">
-      <h3 className="text-1xl font-bold mb-4">Tabela de Rolagens</h3>
+      <h3 className="text-1xl font-bold mb-4">{t("diceRollTable")}</h3>
       
       <div className="grid grid-cols-3 gap-4 mb-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Dados
+            {t("dice")}
           </label>
           <input
             type="number"
@@ -59,7 +61,7 @@ export default function DiceRollTable() {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Dificuldade
+            {t("difficulty")}
           </label>
           <input
             type="number"
@@ -72,7 +74,7 @@ export default function DiceRollTable() {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Especialidade
+            {t("specialty")}
           </label>
           <input
             type="checkbox"

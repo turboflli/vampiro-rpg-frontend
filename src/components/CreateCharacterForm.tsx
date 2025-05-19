@@ -4,18 +4,19 @@ import { initialCharacter } from "../types/initialCharacter";
 import type { Backgrounds, Clan, Discipline, Flaws, Merits, Road } from "../types/character";
 import DotRating from "./DotRating";
 import AutoCompleteSelect from "./AutoCompleteSelect";
-import { ChevronDown, ChevronUp, Trash, Plus, Undo2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Trash, Plus, Undo2, Save } from 'lucide-react';
 import SquareRating from "./SquareRating";
 import TraitTypeSelect from "./TraitTypeSelect";
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom';
+import { useTranslation } from "react-i18next"; 
 
 interface Props {
     id?: number;
 }
 
 export default function CreateCharacterForm({ id }: Props) {
-
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const [form, setForm] = useState(initialCharacter);
@@ -65,6 +66,26 @@ export default function CreateCharacterForm({ id }: Props) {
 
   const update = (field: string, value: string | number) => {
     setForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleClanChange = (clan: Clan | null) => {
+    if (clan) {
+      update("clanId", clan.id);
+      setSelectedClan(clan);
+    } if (clan === null) {
+      update("clanId", null);
+      setSelectedClan(null);
+    }
+  };
+
+  const handleRoadChange = (road: Road | null) => {
+    if (road) {
+      update("roadId", road.id);
+      setSelectedRoad(road);
+    } if (road === null) {
+      update("roadId", null);
+      setSelectedRoad(null);
+    }
   };
 
   const addDisciplina = () => {
@@ -148,11 +169,11 @@ export default function CreateCharacterForm({ id }: Props) {
 
   const buildRoadTooltip = (road: Road) => {
     return (
-      "Aura: " + road.aura +
-      "\nCrenças: " + road.ethics +
-      "\nPecados: " + road.sins +
-      "\n" + (road.useConscience ? "Consciência " : "Convicção") +
-      " e " + (road.useSelf_control ? "Auto-controle" : "Instinto")
+      `${t('aura')}: ${road.aura}\n` +
+      `${t('ethics')}: ${road.ethics}\n` +
+      `${t('sins')}: ${road.sins}\n` +
+      `${road.useConscience ? t('conscience') : t('conviction')} e ` +
+      `${road.useSelf_control ? t('selfControl') : t('instinct')}`
     );
   };
 
@@ -160,8 +181,8 @@ export default function CreateCharacterForm({ id }: Props) {
     e.preventDefault();
 
     createCharacter(form)
-    .then(() => alert("Personagem criado com sucesso!"))
-    .catch(() => alert("Erro ao criar personagem."));
+    .then(() => alert(t('characterCreated')))
+    .catch(() => alert(t('errorCreatingCharacter')));
     navigate("/");
   };
 
@@ -188,35 +209,35 @@ export default function CreateCharacterForm({ id }: Props) {
 
   return (
 
-<form onSubmit={handleSubmit} className="max-w-6xl w-full p-6 bg-white shadow-2xl rounded-lg text-black ">
+<form onSubmit={handleSubmit} className="max-w-7xl w-full p-6 bg-white shadow-2xl rounded-lg text-black ">
       <Link to="/" className="flex items-center text-blue-600 hover:underline">
         <Undo2 className="h-5 w-5 mr-2" />
-        Voltar
+        {t('back')}
       </Link>
-      <h1 className="text-2xl font-bold text-center mb-6">Criar Personagem</h1>
+      <h1 className="text-2xl font-bold text-center mb-6">{t('createCharacter')}</h1>
 
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <input className="border p-2 rounded bg-white" placeholder="Nome" value={form.name} onChange={e => update("name", e.target.value)} required />
-        <input className="border p-2 rounded bg-white" placeholder="Conceito" value={form.concept} onChange={e => update("concept", e.target.value)} />
-        <input className="border p-2 rounded bg-white" placeholder="Natureza" value={form.nature} onChange={e => update("nature", e.target.value)} />
-        <input className="border p-2 rounded bg-white" placeholder="Comportamento" value={form.demeanor} onChange={e => update("demeanor", e.target.value)} />
-        <input className="border p-2 rounded bg-white" placeholder="Geração" type="number" min="4" max="15" value={form.generation} onChange={e => update("generation", e.target.value)} />
-        <input className="border p-2 rounded bg-white" placeholder="Sire" value={form.sire} onChange={e => update("sire", e.target.value)} />
+        <input className="border p-2 rounded bg-white" placeholder={t('name')} value={form.name} onChange={e => update("name", e.target.value)} required />
+        <input className="border p-2 rounded bg-white" placeholder={t('concept')} value={form.concept} onChange={e => update("concept", e.target.value)} />
+        <input className="border p-2 rounded bg-white" placeholder={t('nature')} value={form.nature} onChange={e => update("nature", e.target.value)} />
+        <input className="border p-2 rounded bg-white" placeholder={t('demeanor')} value={form.demeanor} onChange={e => update("demeanor", e.target.value)} />
+        <input className="border p-2 rounded bg-white" placeholder={t('generation')} type="number" min="4" max="15" value={form.generation} onChange={e => update("generation", e.target.value)} />
+        <input className="border p-2 rounded bg-white" placeholder={t('sire')} value={form.sire} onChange={e => update("sire", e.target.value)} />
 
         <AutoCompleteSelect<Clan>
-          label="Clã"
+          label={t('clan')}
           options={clans}
           value={form.clanId}
-          onChange={(clan) => {if (clan) { update("clanId", clan.id); setSelectedClan(clan); }}}
+          onChange={(clan) => handleClanChange(clan)}
           getLabel={(clan) => clan.name}
           getTooltip={buildClanTooltip}
         />
 
         <AutoCompleteSelect<Road>
-          label="Caminho"
+          label={t('road')}
           options={roads}
           value={form.roadId}
-          onChange={(road) => {if (road) { update("roadId", road.id); setSelectedRoad(road); }}}
+          onChange={(road) => handleRoadChange(road)}
           getLabel={(road) => road.name + " - " + road.pathName}
           getTooltip={buildRoadTooltip}
         />
@@ -225,7 +246,7 @@ export default function CreateCharacterForm({ id }: Props) {
       {/* Atributos */}
       <fieldset className="mt-6 ">
       <div className="text-lg font-semibold mb-2 flex justify-center items-center gap-2">
-          <h3 className="font-medium mb-2">Atributos  </h3>
+          <h3 className="font-medium mb-2">{t('attributes')}  </h3>
           <button type="button" className="text-sm text-blue-600" onClick={() => setShowAtributos(v => !v)}>
           {showAtributos ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
@@ -233,19 +254,19 @@ export default function CreateCharacterForm({ id }: Props) {
         {showAtributos && (
           <div className="grid grid-cols-3 gap-4">
             <div>
-            <DotRating label="Força" value={form.strength} onChange={v => update("strength", v)} />
-            <DotRating label="Destreza" value={form.dexterity} onChange={v => update("dexterity", v)} />
-            <DotRating label="Vigor" value={form.stamina} onChange={v => update("stamina", v)} />
+            <DotRating label={t('strength')} value={form.strength} onChange={v => update("strength", v)} />
+            <DotRating label={t('dexterity')} value={form.dexterity} onChange={v => update("dexterity", v)} />
+            <DotRating label={t('stamina')} value={form.stamina} onChange={v => update("stamina", v)} />
             </div>
             <div>
-            <DotRating label="Carisma" value={form.charisma} onChange={v => update("charisma", v)} />
-            <DotRating label="Manipulação" value={form.manipulation} onChange={v => update("manipulation", v)} />
-            <DotRating label="Aparência" value={form.appearance} onChange={v => update("appearance", v)} />
+            <DotRating label={t('charisma')} value={form.charisma} onChange={v => update("charisma", v)} />
+            <DotRating label={t('manipulation')} value={form.manipulation} onChange={v => update("manipulation", v)} />
+            <DotRating label={t('appearance')} value={form.appearance} onChange={v => update("appearance", v)} />
             </div>
             <div>
-            <DotRating label="Percepção" value={form.perception} onChange={v => update("perception", v)} />
-            <DotRating label="Inteligência" value={form.intelligence} onChange={v => update("intelligence", v)} />
-            <DotRating label="Raciocínio" value={form.wits} onChange={v => update("wits", v)} />
+            <DotRating label={t('perception')} value={form.perception} onChange={v => update("perception", v)} />
+            <DotRating label={t('intelligence')} value={form.intelligence} onChange={v => update("intelligence", v)} />
+            <DotRating label={t('wits')} value={form.wits} onChange={v => update("wits", v)} />
             </div>
           </div>
         )}
@@ -254,7 +275,7 @@ export default function CreateCharacterForm({ id }: Props) {
       {/* Talentos, Habilidades e Conhecimentos */}
       <fieldset className="mt-6">
       <div className="text-lg font-semibold mb-2 flex justify-center items-center gap-2">
-          <h3 className="font-medium mb-2">Perícias  </h3>
+          <h3 className="font-medium mb-2">{t('perks')}  </h3>
           <button type="button" className="text-sm text-blue-600" onClick={() => {setShowTalentos(v => !v), setShowConhecimentos(v => !v), setShowHabilidades(v => !v)}}>
           {showTalentos || showHabilidades || showConhecimentos ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
@@ -263,46 +284,46 @@ export default function CreateCharacterForm({ id }: Props) {
           {/* Talentos */}
           <div>
             <div className="flex justify-center items-center mb-2 gap-2">
-            <h3 className="font-medium mb-2">Talentos </h3>
+            <h3 className="font-medium mb-2">{t('talent')} </h3>
             <button type="button" className="text-sm text-blue-600" onClick={() => setShowTalentos(v => !v)}>
               {showTalentos ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </button>
             </div>
             {showTalentos && (
               <div>
-              <DotRating label="Prontidão" value={form.alertness} onChange={v => update("alertness", v)} maxValue={5} />
-              <DotRating label="Esportes" value={form.athletics} onChange={v => update("athletics", v)} maxValue={5} />
-              <DotRating label="Atençaõ" value={form.awareness} onChange={v => update("awareness", v)} maxValue={5} />
-              <DotRating label="Briga" value={form.brawl} onChange={v => update("brawl", v)} maxValue={5} />
-              <DotRating label="Empatia" value={form.empathy} onChange={v => update("empathy", v)} maxValue={5} />
-              <DotRating label="Expressão" value={form.expression} onChange={v => update("expression", v)} maxValue={5} />
-              <DotRating label="Intimidação" value={form.intimidation} onChange={v => update("intimidation", v)} maxValue={5} />
-              <DotRating label="Liderança" value={form.leadership} onChange={v => update("leadership", v)} maxValue={5} />
-              <DotRating label="Crime" value={form.streetwise} onChange={v => update("streetwise", v)} maxValue={5} />
-              <DotRating label="Lábia" value={form.subterfuge} onChange={v => update("subterfuge", v)} maxValue={5} />
+              <DotRating label={t('alertness')} value={form.alertness} onChange={v => update("alertness", v)} maxValue={5} />
+              <DotRating label={t('athletics')} value={form.athletics} onChange={v => update("athletics", v)} maxValue={5} />
+              <DotRating label={t('awareness')} value={form.awareness} onChange={v => update("awareness", v)} maxValue={5} />
+              <DotRating label={t('brawl')} value={form.brawl} onChange={v => update("brawl", v)} maxValue={5} />
+              <DotRating label={t('empathy')} value={form.empathy} onChange={v => update("empathy", v)} maxValue={5} />
+              <DotRating label={t('expression')} value={form.expression} onChange={v => update("expression", v)} maxValue={5} />
+              <DotRating label={t('intimidation')} value={form.intimidation} onChange={v => update("intimidation", v)} maxValue={5} />
+              <DotRating label={t('leadership')} value={form.leadership} onChange={v => update("leadership", v)} maxValue={5} />
+              <DotRating label={t('streetwise')} value={form.streetwise} onChange={v => update("streetwise", v)} maxValue={5} />
+              <DotRating label={t('subterfuge')} value={form.subterfuge} onChange={v => update("subterfuge", v)} maxValue={5} />
               </div>
             )}
           </div>
           {/* Habilidades */}
           <div>
             <div className="flex justify-center items-center mb-2 gap-2">
-              <h3 className="font-medium mb-2 gap-4">Habilidades </h3>
+              <h3 className="font-medium mb-2">{t('skill')} </h3>
               <button type="button" className="text-sm text-blue-600" onClick={() => setShowHabilidades(v => !v)}>
                   {showHabilidades ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button>
             </div>
             {showHabilidades && (
               <div>
-              <DotRating label="Empatia com Animais" value={form.animal_kin} onChange={v => update("animal_kin", v)} maxValue={5} />
-              <DotRating label="Arquerismo" value={form.archery} onChange={v => update("archery", v)} maxValue={5} />
-              <DotRating label="Artesanato" value={form.crafts} onChange={v => update("crafts", v)} maxValue={5} />
-              <DotRating label="Etiqueta" value={form.etiquette} onChange={v => update("etiquette", v)} maxValue={5} />
-              <DotRating label="Prestidigitação" value={form.legerdemain} onChange={v => update("legerdemain", v)} maxValue={5} />
-              <DotRating label="Armas Brancas" value={form.melee} onChange={v => update("melee", v)} maxValue={5} />
-              <DotRating label="Performance" value={form.performance} onChange={v => update("performance", v)} maxValue={5} />
-              <DotRating label="Cavalgar" value={form.ride} onChange={v => update("ride", v)} maxValue={5} />
-              <DotRating label="Furtividade" value={form.stealth} onChange={v => update("stealth", v)} maxValue={5} />
-              <DotRating label="Sobrevivência" value={form.survival} onChange={v => update("survival", v)} maxValue={5} />
+              <DotRating label={t('animal_kin')} value={form.animal_kin} onChange={v => update("animal_kin", v)} maxValue={5} />
+              <DotRating label={t('archery')} value={form.archery} onChange={v => update("archery", v)} maxValue={5} />
+              <DotRating label={t('crafts')} value={form.crafts} onChange={v => update("crafts", v)} maxValue={5} />
+              <DotRating label={t('etiquette')} value={form.etiquette} onChange={v => update("etiquette", v)} maxValue={5} />
+              <DotRating label={t('legerdemain')} value={form.legerdemain} onChange={v => update("legerdemain", v)} maxValue={5} />
+              <DotRating label={t('melee')} value={form.melee} onChange={v => update("melee", v)} maxValue={5} />
+              <DotRating label={t('performance')} value={form.performance} onChange={v => update("performance", v)} maxValue={5} />
+              <DotRating label={t('ride')} value={form.ride} onChange={v => update("ride", v)} maxValue={5} />
+              <DotRating label={t('stealth')} value={form.stealth} onChange={v => update("stealth", v)} maxValue={5} />
+              <DotRating label={t('survival')} value={form.survival} onChange={v => update("survival", v)} maxValue={5} />
               </div>
             )}
 
@@ -310,23 +331,23 @@ export default function CreateCharacterForm({ id }: Props) {
           {/* Conhecimentos */}
           <div>
             <div className="flex justify-center items-center mb-2 gap-2">
-              <h3 className="font-medium mb-2">Conhecimentos</h3>
+              <h3 className="font-medium mb-2">{t('knowledge')}</h3>
               <button type="button" className="text-sm text-blue-600" onClick={() => setShowConhecimentos(v => !v)}>
                 {showConhecimentos ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button> 
             </div>
             {showConhecimentos && (
             <div>
-              <DotRating label="Instrução" value={form.academics} onChange={v => update("academics", v)} maxValue={5} />
-              <DotRating label="Enigmas" value={form.enigmas} onChange={v => update("enigmas", v)} maxValue={5} />
-              <DotRating label="Sabedoria popular" value={form.heart_wisdom} onChange={v => update("heart_wisdom", v)} maxValue={5} />
-              <DotRating label="Investigação" value={form.investigation} onChange={v => update("investigation", v)} maxValue={5} />
-              <DotRating label="Direito" value={form.law} onChange={v => update("law", v)} maxValue={5} />
-              <DotRating label="Medicina" value={form.medicine} onChange={v => update("medicine", v)} maxValue={5} />
-              <DotRating label="Ocultismo" value={form.occult} onChange={v => update("occult", v)} maxValue={5} />
-              <DotRating label="Política" value={form.politics} onChange={v => update("politics", v)} maxValue={5} />
-              <DotRating label="Senescalia" value={form.seneschal} onChange={v => update("seneschal", v)} maxValue={5} />
-              <DotRating label="Ciência" value={form.theology} onChange={v => update("theology", v)} maxValue={5} />
+              <DotRating label={t('academics')} value={form.academics} onChange={v => update("academics", v)} maxValue={5} />
+              <DotRating label={t('enigmas')} value={form.enigmas} onChange={v => update("enigmas", v)} maxValue={5} />
+              <DotRating label={t('heart_wisdom')} value={form.heart_wisdom} onChange={v => update("heart_wisdom", v)} maxValue={5} />
+              <DotRating label={t('investigation')} value={form.investigation} onChange={v => update("investigation", v)} maxValue={5} />
+              <DotRating label={t('law')} value={form.law} onChange={v => update("law", v)} maxValue={5} />
+              <DotRating label={t('medicine')} value={form.medicine} onChange={v => update("medicine", v)} maxValue={5} />
+              <DotRating label={t('occult')} value={form.occult} onChange={v => update("occult", v)} maxValue={5} />
+              <DotRating label={t('politics')} value={form.politics} onChange={v => update("politics", v)} maxValue={5} />
+              <DotRating label={t('seneschal')} value={form.seneschal} onChange={v => update("seneschal", v)} maxValue={5} />
+              <DotRating label={t('theology')} value={form.theology} onChange={v => update("theology", v)} maxValue={5} />
             </div>
             )}
           </div>
@@ -335,9 +356,9 @@ export default function CreateCharacterForm({ id }: Props) {
 
       {/* Disciplinas do Clã */}
       <fieldset className="mt-6">
-        <legend className="text-lg font-semibold mb-2 text-center">Disciplinas do Clã</legend>
+        <legend className="text-lg font-semibold mb-2 text-center">{t('clan_disciplines')}</legend>
         <div className="grid grid-cols-3 gap-4">
-          {selectedClan && (
+          {selectedClan !== null && (
         <>
           <DotRating label={selectedClan.discipline1} value={form.clanDiscipline1} onChange={v => update("clanDiscipline1", v)} />
           <DotRating label={selectedClan.discipline2} value={form.clanDiscipline2} onChange={v => update("clanDiscipline2", v)} />
@@ -348,36 +369,36 @@ export default function CreateCharacterForm({ id }: Props) {
       </fieldset>
 
       <fieldset className="mt-6">
-        <legend className="text-lg font-semibold mb-2 text-center">Disciplinas Extras</legend>
+        <legend className="text-lg font-semibold mb-2 text-center">{t('extra_disciplines')}</legend>
         <div className="grid grid-cols-2 gap-4 ">
           {form.disciplines.map((d, i) => (
             <div key={i} className="flex gap-4 mb-2">
-              <input className="border p-2 rounded bg-white flex-1" placeholder="Nome da disciplina" value={d.name} onChange={e => updateDisciplina(i, "name", e.target.value as unknown as number)} />
+              <input className="border p-2 rounded bg-white flex-1" placeholder={t('discipline')} value={d.name} onChange={e => updateDisciplina(i, "name", e.target.value as unknown as number)} />
               <DotRating value={d.score} onChange={v => updateDisciplina(i, "score", v)} />
               <button type="button" onClick={() => removeDisciplina(i)} className="text-red-500"><Trash size={16} /></button>
             </div>
           ))}
         </div>
-        <button type="button" onClick={addDisciplina} className="mt-2 text-blue-600"><Plus size={16} /> Disciplina</button>
+        <button type="button" onClick={addDisciplina} className="mt-2 text-blue-600 flex items-center gap-2"><Plus size={16} /> {t('discipline')}</button>
       </fieldset>
 
       <fieldset className="mt-6">
-        <legend className="text-lg font-semibold mb-2 text-center">Antecedentes</legend>
+        <legend className="text-lg font-semibold mb-2 text-center">{t('backgrounds')}</legend>
         <div className="grid grid-cols-2 gap-4 ">
           {form.backgrounds.map((d, i) => (
             <div key={i} className="flex gap-4 mb-2">
-              <input className="border p-2 rounded bg-white flex-1" placeholder="Nome do antecedente" value={d.name} onChange={e => updateBackground(i, "name", e.target.value as unknown as number)} />
+              <input className="border p-2 rounded bg-white flex-1" placeholder={t('background')} value={d.name} onChange={e => updateBackground(i, "name", e.target.value as unknown as number)} />
               <DotRating value={d.score} onChange={v => updateBackground(i, "score", v)} maxValue={5}/>
               <button type="button" onClick={() => removeBackground(i)} className="text-red-500"><Trash size={16} /></button>
             </div>
           ))}
         </div>
-        <button type="button" onClick={addBackground} className="mt-2 text-blue-600"><Plus size={16} /> Antecedente</button>
+        <button type="button" onClick={addBackground} className="mt-2 text-blue-600 flex items-center gap-2"><Plus size={16} /> {t('background')}</button>
       </fieldset>
 
       <fieldset className="mt-6">
         <div className="text-lg font-semibold mb-2 flex justify-center items-center gap-2">
-          <h3 className="font-medium mb-2">Virtudes e Outros</h3>
+          <h3 className="font-medium mb-2">{t('virtues')} e Outros</h3>
           <button type="button" className="text-sm text-blue-600" onClick={() => setShowExtras(v => !v)}>
           {showExtras ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
@@ -385,22 +406,22 @@ export default function CreateCharacterForm({ id }: Props) {
         {showExtras && (
 
         <div className="grid grid-cols-2 gap-4">
-          <DotRating label={selectedRoad ? selectedRoad.name + " - " + selectedRoad.pathName : "Caminho"} value={form.road_value} onChange={v => update("road_value", v)} />
-          <DotRating label="Coragem" value={form.courage} onChange={v => update("courage", v)} maxValue={5} />
-          <DotRating label={selectedRoad?.useConscience ? "Consciência" : "Convicção"} value={form.conscience} onChange={v => update("conscience", v)} maxValue={5} />
-          <DotRating label={selectedRoad?.useSelf_control ? "Autocontrole" : "Instinto"} value={form.self_control} onChange={v => update("self_control", v)} maxValue={5} />
+          <DotRating label={selectedRoad ? selectedRoad.name + " - " + selectedRoad.pathName : t('road')} value={form.road_value} onChange={v => update("road_value", v)} />
+          <DotRating label={t('courage')} value={form.courage} onChange={v => update("courage", v)} maxValue={5} />
+          <DotRating label={selectedRoad?.useConscience ? t('conscience') : t('conviction')} value={form.conscience} onChange={v => update("conscience", v)} maxValue={5} />
+          <DotRating label={selectedRoad?.useSelf_control ? t('selfControl') : t('instinct')} value={form.self_control} onChange={v => update("self_control", v)} maxValue={5} />
           
           
-          <DotRating label="Vontade" value={form.willpower} onChange={v => update("willpower", v)} />
+          <DotRating label={t('willpower')} value={form.willpower} onChange={v => update("willpower", v)} />
 
-          <SquareRating label="Pontos de Sangue" value={form.bloodpool} onChange={v => update("bloodpool", v)} maxValue={encontrarLimiteMaximoDeSangue()} />
+          <SquareRating label={t('bloodpool')} value={form.bloodpool} onChange={v => update("bloodpool", v)} maxValue={encontrarLimiteMaximoDeSangue()} />
 
           <div>
-            <label className="block font-medium mb-1">Experiência:</label>
+            <label className="block font-medium mb-1">{t('experience')}:</label>
             <input type="number" className="border p-2 rounded w-full" value={form.experience} onChange={e => update("experience", parseInt(e.target.value))} />
           </div>
           <div>
-            <label className="block font-medium mb-1">Fraqueza: </label>
+            <label className="block font-medium mb-1">{t('weakness')}: </label>
             <input type="text" className="border p-2 rounded w-full" value={selectedClan?.weakness} disabled />
           </div>
 
@@ -410,7 +431,7 @@ export default function CreateCharacterForm({ id }: Props) {
 
       <fieldset className="mt-6">
         <div className="text-lg font-semibold mb-2 flex justify-center items-center gap-2">
-          <h3 className="font-medium mb-2">Traits</h3>
+          <h3 className="font-medium mb-2">{t('traits')}</h3>
           <button type="button" className="text-sm text-blue-600" onClick={() => setShowTraits(v => !v)}>
           {showExtras ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
@@ -418,35 +439,38 @@ export default function CreateCharacterForm({ id }: Props) {
         {showTraits && (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <legend className="text-lg font-semibold mb-2 text-center">Méritos</legend>
+              <legend className="text-lg font-semibold mb-2 text-center">{t('merits')}</legend>
               {form.merits.map((m, i) => (
                 <div key={i} className="flex gap-2 mb-2">
-                  <input className="border p-2 rounded bg-white flex-1" placeholder="Nome do mérito" value={m.name} onChange={e => updateMerit(i, "name", e.target.value as unknown as number)} />
+                  <input className="border p-2 rounded bg-white flex-1" placeholder={t('merit')} value={m.name} onChange={e => updateMerit(i, "name", e.target.value as unknown as number)} />
                   <TraitTypeSelect onChange={v => updateMerit(i, "type", v)} value={m.type} />
                   <DotRating value={m.score} onChange={v => updateMerit(i, "score", v)} maxValue={5} />
                   <button type="button" onClick={() => removeMerit(i)} className="text-red-500 font-bold"><Trash size={16} /></button>
                 </div>
               ))}
-              <button type="button" onClick={addMerit} className="mt-2 text-blue-600"><Plus size={16} /> Mérito</button>
+              <button type="button" onClick={addMerit} className="mt-2 text-blue-600 flex items-center gap-2"><Plus size={16} /> {t('merit')}</button>
             </div>
             <div>
-              <legend className="text-lg font-semibold mb-2 text-center">Defeitos</legend>
+              <legend className="text-lg font-semibold mb-2 text-center">{t('flaws')}</legend>
               {form.flaws.map((f, i) => (
                 <div key={i} className="flex gap-2 mb-2">
-                  <input className="border p-2 rounded bg-white flex-1" placeholder="Nome do defeito" value={f.name} onChange={e => updateFlaw(i, "name", e.target.value as unknown as number)} />
+                  <input className="border p-2 rounded bg-white flex-1" placeholder={t('flaw')} value={f.name} onChange={e => updateFlaw(i, "name", e.target.value as unknown as number)} />
                   <TraitTypeSelect onChange={v => updateFlaw(i, "type", v)} value={f.type} />
                   <DotRating value={f.score} onChange={v => updateFlaw(i, "score", v)} maxValue={5} />
                   <button type="button" onClick={() => removeFlaw(i)} className="text-red-500 font-bold"><Trash size={16} /></button>
                 </div>
               ))}
-              <button type="button" onClick={addFlaw} className="mt-2 text-blue-600"><Plus size={16} /> Defeito</button>
+              <button type="button" onClick={addFlaw} className="mt-2 text-blue-600 flex items-center gap-2"><Plus size={16} /> {t('flaw')}</button>
             </div>
           </div>
         )}
       </fieldset>
 
       <div className="mt-6">
-        <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700">Salvar Personagem</button>
+        <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 flex justify-center items-center gap-2">
+          <Save size={20} />
+          {t('saveCharacter')}
+        </button>
       </div>
     </form>
 
