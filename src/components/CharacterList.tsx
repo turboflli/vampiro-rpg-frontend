@@ -17,6 +17,12 @@ export default function CharacterList() {
     }, []);
 
     const findCharacterByName = (name: string) => {
+        if (!name) {
+            getSummary()
+                .then(data => setCharacters(data))
+                .catch(() => alert("Erro ao buscar resumo"));
+            return;
+        }
         getCharacterByName(name)
             .then(data => setCharacters(data))
             .catch(() => alert("Erro ao buscar personagens"));

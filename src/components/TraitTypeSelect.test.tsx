@@ -1,37 +1,38 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, test, vi } from 'vitest';
 import TraitTypeSelect from './TraitTypeSelect';
 
 describe('TraitTypeSelect', () => {
-  it('Renderiza todas as opções de tipo de traço', () => {
+  test('renders all trait type options', () => {
     const mockOnChange = vi.fn();
     render(<TraitTypeSelect onChange={mockOnChange} />);
     
-    // Verifica se todas as opções estão presentes
-    expect(screen.getByText('--Selecione--')).toBeInTheDocument();
-    expect(screen.getByText('Físico')).toBeInTheDocument();
-    expect(screen.getByText('Mental')).toBeInTheDocument();
-    expect(screen.getByText('Social')).toBeInTheDocument();
-    expect(screen.getByText('Sobrenatural')).toBeInTheDocument();
+    // Check if all options are present
+    expect(screen.getByText('select')).toBeInTheDocument();
+    expect(screen.getByText('physical')).toBeInTheDocument();
+    expect(screen.getByText('mental')).toBeInTheDocument();
+    expect(screen.getByText('social')).toBeInTheDocument();
+    expect(screen.getByText('supernatural')).toBeInTheDocument();
   });
 
-  it('chama onChange com o valor correto quando uma opção é selecionada', () => {
+  test('calls onChange with correct value when an option is selected', () => {
     const mockOnChange = vi.fn();
     render(<TraitTypeSelect onChange={mockOnChange} />);
     
-    // Seleciona uma opção
+    // Select an option
     fireEvent.change(screen.getByRole('combobox'), {
       target: { value: 'Fisico' }
     });
 
-    // Verifica se onChange foi chamado com o valor correto
+    // Check if onChange was called with the correct value
     expect(mockOnChange).toHaveBeenCalledWith('Fisico');
   });
 
-  it('renderiza com as classes de estilo corretas', () => {
+  test('renders with correct style classes', () => {
     const mockOnChange = vi.fn();
     render(<TraitTypeSelect onChange={mockOnChange} />);
     
     const container = screen.getByRole('combobox').parentElement;
-    expect(container).toHaveClass('flex', 'items-center', 'mb-1', 'border', 'border-gray-300', 'rounded-md', 'p-2', 'shadow-sm');
+    expect(container).toHaveClass('flex items-center mb-1 border border-gray-300 rounded-md p-2 shadow-sm');
   });
 }); 

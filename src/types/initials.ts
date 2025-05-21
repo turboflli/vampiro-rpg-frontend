@@ -1,5 +1,5 @@
-// src/types/initialCharacterDTO.ts
 import { Character } from "./character";
+import { Avatar } from "./avatar";
 
 export const initialCharacter: Character = {
     id: undefined,
@@ -21,4 +21,18 @@ export const initialCharacter: Character = {
     conscience: 1, courage: 1, self_control: 1,
     road_value: 1, willpower: 5, bloodpool: 10, experience: 0,
     disciplines: [], backgrounds: [], merits: [], flaws: [],
+};
+
+export const initialAvatar: Avatar = {
+    hairColor: '#2c1b18',
+    skinColor: 'ffdbb4',
+    accessory: undefined,
+    accessoryColor: '#3c4f5c',
+    clotheColor: '#000',
+    clothing: 'shirtCrewNeck',
+    eyebrows: 'defaultNatural',
+    top: 'bob',
+    mouth: 'smile',
+    facialHair: undefined,
+    eyeColor: '#3377ff',
 };

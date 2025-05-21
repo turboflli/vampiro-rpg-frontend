@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, test, vi, beforeEach } from 'vitest';
 import AutoCompleteSelect from './AutoCompleteSelect';
 
 interface TestItem {
@@ -27,17 +28,17 @@ describe('AutoCompleteSelect', () => {
     vi.clearAllMocks();
   });
 
-  it('Renderiza com label e input', () => {
+  test('renders with label and input', () => {
     render(<AutoCompleteSelect {...defaultProps} />);
     
     expect(screen.getByText('Test Label')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Digite para filtrar...')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('search')).toBeInTheDocument();
   });
 
-  it('Mostra opções filtradas ao digitar', () => {
+  test('shows filtered options when typing', () => {
     render(<AutoCompleteSelect {...defaultProps} />);
     
-    const input = screen.getByPlaceholderText('Digite para filtrar...');
+    const input = screen.getByPlaceholderText('search');
     fireEvent.focus(input);
     fireEvent.change(input, { target: { value: 'Test' } });
 
@@ -45,31 +46,32 @@ describe('AutoCompleteSelect', () => {
     expect(screen.queryByText('Item 1')).not.toBeInTheDocument();
   });
 
-  it('Chama onChange quando seleciona um item', () => {
+  test('calls onChange when selecting an item', () => {
     render(<AutoCompleteSelect {...defaultProps} />);
     
-    const input = screen.getByPlaceholderText('Digite para filtrar...');
+    const input = screen.getByPlaceholderText('search');
     fireEvent.focus(input);
     fireEvent.click(screen.getByText('Item 1'));
 
+    expect(defaultProps.onChange).toHaveBeenCalledTimes(1);
     expect(defaultProps.onChange).toHaveBeenCalledWith(mockItems[0]);
     expect(input).toHaveValue('Item 1');
   });
 
-  it('Mostra "Nenhuma opção encontrada" quando não há correspondências', () => {
+  test('shows "No options found" when there are no matches', () => {
     render(<AutoCompleteSelect {...defaultProps} />);
     
-    const input = screen.getByPlaceholderText('Digite para filtrar...');
+    const input = screen.getByPlaceholderText('search');
     fireEvent.focus(input);
     fireEvent.change(input, { target: { value: 'NonExistent' } });
 
     expect(screen.getByText('Nenhuma opção encontrada')).toBeInTheDocument();
   });
 
-  it('Fecha dropdown ao clicar fora', () => {
+  test('closes dropdown when clicking outside', () => {
     render(<AutoCompleteSelect {...defaultProps} />);
     
-    const input = screen.getByPlaceholderText('Digite para filtrar...');
+    const input = screen.getByPlaceholderText('search');
     fireEvent.focus(input);
     expect(screen.getByText('Item 1')).toBeInTheDocument();
 
@@ -79,20 +81,20 @@ describe('AutoCompleteSelect', () => {
     expect(screen.queryByText('Item 1')).not.toBeInTheDocument();
   });
 
-  it('Mostra tooltips quando fornecidos', () => {
+  test('shows tooltips when provided', () => {
     render(<AutoCompleteSelect {...defaultProps} />);
     
-    const input = screen.getByPlaceholderText('Digite para filtrar...');
+    const input = screen.getByPlaceholderText('search');
     fireEvent.focus(input);
     
     const item = screen.getByText('Item 1');
     expect(item).toHaveAttribute('title', 'Descrição 1');
   });
 
-  it('Atualiza o valor do input ao selecionar um item', () => {
+  test('updates input value when selecting an item', () => {
     render(<AutoCompleteSelect {...defaultProps} />);
     
-    const input = screen.getByPlaceholderText('Digite para filtrar...');
+    const input = screen.getByPlaceholderText('search');
     fireEvent.focus(input);
     fireEvent.click(screen.getByText('Item 1'));
 

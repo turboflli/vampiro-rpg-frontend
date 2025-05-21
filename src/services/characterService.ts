@@ -8,7 +8,18 @@ export async function createCharacter(dto: Character) {
     body: JSON.stringify(dto),
   });
   if (!res.ok) throw new Error("Erro ao criar personagem");
+  return res.json() as Promise<Character>;
 }
+
+export async function updateCharacter(dto: Character) {
+  const res = await fetch(`${API_BASE_URL}/characters/update`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dto),
+  });
+  if (!res.ok) throw new Error("Erro ao atualizar personagem");
+  return res.json() as Promise<Character>;
+} 
 
 export async function getCharacter(id: number) {
   const res = await fetch(`${API_BASE_URL}/characters/find/${id}`, {

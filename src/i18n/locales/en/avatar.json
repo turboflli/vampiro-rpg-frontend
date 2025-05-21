@@ -1,0 +1,15 @@
+{
+  "hairColor": "Hair color",
+  "skinColor": "Skin color",
+  "accessory": "Accessories",
+  "accessoryColor": "Accessory color",
+  "clothing": "Clothing type",
+  "clotheColor": "Clothing color",
+  "eyebrows": "Eyebrows type",
+  "top": "Hair type",
+  "mouth": "Mouth type",
+  "facialHair": "Facial hair type",
+  "eyeColor": "Eye color",
+  "preview": "Preview",
+  "saveAvatar": "Save Avatar"
+}

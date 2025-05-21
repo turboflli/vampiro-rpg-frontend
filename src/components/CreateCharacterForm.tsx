@@ -1,29 +1,27 @@
 import { useState, useEffect } from "react";
-import { getAllClans, getAllRoads, createCharacter, getCharacter } from "../services/characterService";
-import { initialCharacter } from "../types/initialCharacter";
-import type { Backgrounds, Clan, Discipline, Flaws, Merits, Road } from "../types/character";
+import type { Backgrounds, Character, Clan, Discipline, Flaws, Merits, Road } from "../types/character";
 import DotRating from "./DotRating";
 import AutoCompleteSelect from "./AutoCompleteSelect";
-import { ChevronDown, ChevronUp, Trash, Plus, Undo2, Save } from 'lucide-react';
+import { ChevronDown, ChevronUp, Trash, Plus, Save } from 'lucide-react';
 import SquareRating from "./SquareRating";
 import TraitTypeSelect from "./TraitTypeSelect";
-import { useNavigate } from 'react-router-dom'
-import { Link } from 'react-router-dom';
 import { useTranslation } from "react-i18next"; 
 
 interface Props {
-    id?: number;
+    form: Character;
+    update: (field: string, value: string | number | null | Array<any>) => void;
+    selectedClan: Clan | null;
+    setSelectedClan: (clan: Clan | null) => void;
+    selectedRoad: Road | null;
+    setSelectedRoad: (road: Road | null) => void;
+    clans: Clan[];
+    roads: Road[];
+    saveCharacter: () => void;
 }
 
-export default function CreateCharacterForm({ id }: Props) {
+export default function CreateCharacterForm({ form, update, selectedClan, setSelectedClan, selectedRoad, setSelectedRoad, clans, roads, saveCharacter }: Props) {
     const { t } = useTranslation();
-    const navigate = useNavigate();
-
-    const [form, setForm] = useState(initialCharacter);
-    const [clans, setClans] = useState<Clan[]>([]);
-    const [roads, setRoads] = useState<Road[]>([]);
-    const [selectedClan, setSelectedClan] = useState<Clan | null>(null);
-    const [selectedRoad, setSelectedRoad] = useState<Road | null>(null);
+    
 
     // Colapsáveis
     const [showAtributos, setShowAtributos] = useState(true);
@@ -33,40 +31,12 @@ export default function CreateCharacterForm({ id }: Props) {
     const [showExtras, setShowExtras] = useState(true);
     const [showTraits, setShowTraits] = useState(true);
 
-  useEffect(() => {
-    // Load clans and roads first
-    getAllClans()
-      .then(data => setClans(data))
-      .catch(() => alert("Erro ao buscar clãs"));
-    getAllRoads()
-      .then(data => setRoads(data))
-      .catch(() => alert("Erro ao buscar roads"));
-  }, []);
-
-  // Handle character loading when id changes
-  useEffect(() => {
-    if (id) {
-      getCharacter(Number(id))
-        .then(data => {
-          setForm(data);
-          // Update selected clan and road after form is set
-          setSelectedClan(clans.find(clan => clan.id === data.clanId) || null);
-          setSelectedRoad(roads.find(road => road.id === data.roadId) || null);
-        })
-        .catch(() => alert("Erro ao buscar personagem"));
-    }
-  }, [id, clans, roads]);
-
   // Update weakness when selectedClan changes
   useEffect(() => {
     if (selectedClan) {
-      setForm(prev => ({ ...prev, weakness: selectedClan.weakness }));
+      update("weakness", selectedClan.weakness);
     }
   }, [selectedClan]);
-
-  const update = (field: string, value: string | number) => {
-    setForm(prev => ({ ...prev, [field]: value }));
-  };
 
   const handleClanChange = (clan: Clan | null) => {
     if (clan) {
@@ -80,7 +50,7 @@ export default function CreateCharacterForm({ id }: Props) {
 
   const handleRoadChange = (road: Road | null) => {
     if (road) {
-      update("roadId", road.id);
+      update("roadId", road.id);      
       setSelectedRoad(road);
     } if (road === null) {
       update("roadId", null);
@@ -89,78 +59,66 @@ export default function CreateCharacterForm({ id }: Props) {
   };
 
   const addDisciplina = () => {
-    setForm(prev => ({
-      ...prev,
-      disciplines: [...prev.disciplines, { name: "", score: 0 }]
-    }));
+    update("disciplines", [...form.disciplines, { name: "", score: 0 }]);
   };
 
   const updateDisciplina = (i: number, field: keyof Discipline, value: number) => {
     const copy = [...form.disciplines];
     (copy[i][field] as any) = value;
-    setForm(prev => ({ ...prev, disciplines: copy }));
+    update("disciplines", copy);
   };
 
   const removeDisciplina = (i: number) => {
     const copy = [...form.disciplines];
     copy.splice(i, 1);
-    setForm(prev => ({ ...prev, disciplines: copy }));
+    update("disciplines", copy);
   };
 
   const addBackground = () => {
-    setForm(prev => ({
-      ...prev,
-      backgrounds: [...prev.backgrounds, { name: "", score: 0 }]
-    }));
+    update("backgrounds", [...form.backgrounds, { name: "", score: 0 }]);
   }
 
   const updateBackground = (i: number, field: keyof Backgrounds, value: number) => {
     const copy = [...form.backgrounds];
     (copy[i][field] as any) = value;
-    setForm(prev => ({ ...prev, backgrounds: copy }));
+    update("backgrounds", copy);
   };
 
   const removeBackground = (i: number) => {
     const copy = [...form.backgrounds];
     copy.splice(i, 1);
-    setForm(prev => ({ ...prev, backgrounds: copy }));
+    update("backgrounds", copy);
   };
   const addFlaw = () => {
-    setForm(prev => ({
-      ...prev,
-      flaws: [...prev.flaws, { name: "", type: "", score: 0 }]
-    }));
+    update("flaws", [...form.flaws, { name: "", type: "", score: 0 }]);
   }
 
   const updateFlaw = (i: number, field: keyof Flaws, value: string | number) => {
       const copy = [...form.flaws];
       (copy[i][field] as any) = value;
-      setForm(prev => ({ ...prev, flaws: copy }));
+      update("flaws", copy);
     };
 
   const removeFlaw = (i: number) => {
     const copy = [...form.flaws];
     copy.splice(i, 1);
-    setForm(prev => ({ ...prev, flaws: copy }));
+    update("flaws", copy);
   };
 
   const addMerit = () => {
-    setForm(prev => ({
-      ...prev,
-      merits: [...prev.merits, { name: "", type: "", score: 0 }]
-    }));
+    update("merits", [...form.merits, { name: "", type: "", score: 0 }]);
   }
 
   const updateMerit = (i: number, field: keyof Merits, value: string | number) => {
     const copy = [...form.merits];
     (copy[i][field] as any) = value;
-    setForm(prev => ({ ...prev, merits: copy }));
+    update("merits", copy);
   };
 
   const removeMerit = (i: number) => {
     const copy = [...form.merits];
     copy.splice(i, 1);
-    setForm(prev => ({ ...prev, merits: copy }));
+    update("merits", copy);
   };
 
   const buildClanTooltip = (clan: Clan) => {
@@ -179,11 +137,8 @@ export default function CreateCharacterForm({ id }: Props) {
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-
-    createCharacter(form)
-    .then(() => alert(t('characterCreated')))
-    .catch(() => alert(t('errorCreatingCharacter')));
-    navigate("/");
+    saveCharacter();
+    
   };
 
   function encontrarLimiteMaximoDeSangue(): number {
@@ -210,10 +165,6 @@ export default function CreateCharacterForm({ id }: Props) {
   return (
 
 <form onSubmit={handleSubmit} className="max-w-7xl w-full p-6 bg-white shadow-2xl rounded-lg text-black ">
-      <Link to="/" className="flex items-center text-blue-600 hover:underline">
-        <Undo2 className="h-5 w-5 mr-2" />
-        {t('back')}
-      </Link>
       <h1 className="text-2xl font-bold text-center mb-6">{t('createCharacter')}</h1>
 
       <div className="grid grid-cols-2 gap-4 mb-6">

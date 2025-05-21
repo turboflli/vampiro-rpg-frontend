@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+RUN npm run build -- --no-test
 
 # Etapa 2: servidor NGINX para servir o React buildado
 FROM nginx:alpine

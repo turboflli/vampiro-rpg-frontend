@@ -1,0 +1,15 @@
+{
+  "hairColor": "Cor do cabelo",
+  "skinColor": "Cor da pele",
+  "accessory": "Acessórios",
+  "accessoryColor": "Cor dos acessórios",
+  "clothing": "Tipo de roupa",
+  "clotheColor": "Cor da roupa",
+  "eyebrows": "Tipo de sobrancelha",
+  "top": "Tipo de cabelo",
+  "mouth": "Tipo de boca",
+  "facialHair": "Tipo de barba",
+  "eyeColor": "Cor dos olhos",
+  "preview": "Pré-visualização",
+  "saveAvatar": "Salvar Avatar"
+}
