@@ -105,5 +105,8 @@
     "courage": "Courage",
     "willpower": "Willpower",
     "bloodpool": "Blood Pool",
-    "experience": "Experience"
+    "experience": "Experience",
+    "login": "Login",
+    "username": "Username",
+    "password": "Password"
 }

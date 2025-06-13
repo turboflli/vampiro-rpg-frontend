@@ -105,5 +105,8 @@
     "courage": "Coragem",
     "willpower": "Vontade",
     "bloodpool": "Pontos de Sangue",
-    "experience": "Experiência"
+    "experience": "Experiência",
+    "login": "Entrar",
+    "username": "Usuário",
+    "password": "Senha"
 }
