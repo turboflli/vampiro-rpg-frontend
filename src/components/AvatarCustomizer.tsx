@@ -4,6 +4,7 @@ import { avataaars } from '@dicebear/collection';
 import { useTranslation } from 'react-i18next';
 import { Avatar, AccessoryType, ClothingType, EyebrowsType, FacialHairType, MouthType, TopType } from '../types/avatar';
 import { Save } from 'lucide-react';
+import AvatarPartSelect from './AvatarPartSelect';
 
 const skinColors = ['614335','ae5d29','d08b5b','edb98a','fd9841','ffdbb4'];
 const accessories: AccessoryType[] = [ 'kurt', 'prescription01', 'prescription02', 'round', 'sunglasses', 'wayfarers'];
@@ -58,59 +59,10 @@ export default function AvatarCustomizer({avatar, update, saveAvatar}: Props) {
     <div className="w-66 p-4 max-w-md mx-auto space-y-4 bg-white shadow-2xl rounded-lg overflow-hidden">
 
       <div className="space-y-2">
-        <div className="flex items-center space-x-2">
-          <label className="block font-semibold">{t('hairColor')}</label>
-          <input
-            type="color"
-            value={avatar.hairColor}
-            onChange={(e) => update('hairColor', e.target.value)}
-            className="w-5 h-5 border-1 border-gray-300 rounded"
-          />
-        </div>
 
-        <label className="block font-semibold mt-4">{t('skinColor')}</label>
-        <select
-          value={avatar.skinColor}
-          onChange={(e) => update('skinColor', e.target.value)}
-          className="w-full border border-gray-300 rounded p-2"
-        >
-          {skinColors.map((color) => (
-            <option key={color} value={color}>{color}</option>
-          ))}
-        </select>
+        <AvatarPartSelect part={t('skinColor')} options={skinColors} onChange={(value) => update('skinColor', value)} acceptUndefined={false} value={avatar.skinColor}/>
 
-        <label className="block font-semibold mt-4">{t('accessory')}</label>
-        <select
-          value={avatar.accessory ?? ''}
-          onChange={(e) => update('accessory', e.target.value === '' ? undefined : e.target.value as AccessoryType)}
-          className="w-full border border-gray-300 rounded p-2"
-        >
-            <option value="">Nenhum</option>
-          {accessories.map((accessory) => (
-            <option key={accessory} value={accessory}>{accessory}</option>
-          ))}
-        </select>
-
-        <div className="flex items-center space-x-2">
-          <label className="block font-semibold">{t('accessoryColor')}</label>
-          <input
-            type="color"
-            value={avatar.accessoryColor}
-            onChange={(e) => update('accessoryColor', e.target.value)}
-            className="w-5 h-5 border-1 border-gray-300 rounded"
-          />
-        </div>
-
-        <label className="block font-semibold mt-4">{t('clothing')}</label>
-        <select
-          value={avatar.clothing}
-          onChange={(e) => update('clothing', e.target.value as ClothingType)}
-          className="w-full border border-gray-300 rounded p-2"
-        >
-          {clothings.map((clothing) => (
-            <option key={clothing} value={clothing}>{clothing}</option>
-          ))}
-        </select>
+        <AvatarPartSelect part={t('clothing')} options={clothings} onChange={(value) => update('clothing', value)} acceptUndefined={false} value={avatar.clothing}/>
 
         <div className="flex items-center space-x-2">
           <label className="block font-semibold">{t('clotheColor')}</label>
@@ -123,50 +75,23 @@ export default function AvatarCustomizer({avatar, update, saveAvatar}: Props) {
         </div>
       </div>
 
-      <label className="block font-semibold mt-4">{t('eyebrows')}</label>
-      <select
-        value={avatar.eyebrows}
-        onChange={(e) => update('eyebrows', e.target.value as EyebrowsType)}
-        className="w-full border border-gray-300 rounded p-2"
-      >
-        {eyebrowsOptions.map((eyebrow) => (
-          <option key={eyebrow} value={eyebrow}>{eyebrow}</option>
-        ))}
-      </select>
+      <AvatarPartSelect part={t('eyebrows')} options={eyebrowsOptions} onChange={(value) => update('eyebrows', value)} acceptUndefined={false} value={avatar.eyebrows}/>
 
-      <label className="block font-semibold mt-4">{t('top')}</label>
-      <select
-        value={avatar.top}
-        onChange={(e) => update('top', e.target.value as TopType)}
-        className="w-full border border-gray-300 rounded p-2"
-      >
-        {topOptions.map((top) => (
-          <option key={top} value={top}>{top}</option>
-        ))}
-      </select>
+      <AvatarPartSelect part={t('top')} options={topOptions} onChange={(value) => update('top', value)} acceptUndefined={false} value={avatar.top}/>
 
-      <label className="block font-semibold mt-4">{t('mouth')}</label>
-      <select
-        value={avatar.mouth}
-        onChange={(e) => update('mouth', e.target.value as MouthType)}
-        className="w-full border border-gray-300 rounded p-2"
-      >
-        {mouthOptions.map((mouth) => (
-          <option key={mouth} value={mouth}>{mouth}</option>
-        ))}
-      </select>
+      <div className="flex items-center space-x-2">
+        <label className="block font-semibold">{t('hairColor')}</label>
+        <input
+          type="color"
+          value={avatar.hairColor}
+          onChange={(e) => update('hairColor', e.target.value)}
+          className="w-5 h-5 border-1 border-gray-300 rounded"
+        />
+      </div>
 
-      <label className="block font-semibold mt-4">{t('facialHair')}</label>
-      <select
-        value={avatar.facialHair ?? ''}
-        onChange={(e) => update('facialHair', e.target.value === '' ? undefined : e.target.value as FacialHairType)}
-        className="w-full border border-gray-300 rounded p-2"
-      >
-        <option value="">Nenhuma</option>
-        {facialHairOptions.map((facialHair) => (
-          <option key={facialHair} value={facialHair}>{facialHair}</option>
-        ))}
-      </select>
+      <AvatarPartSelect part={t('mouth')} options={mouthOptions} onChange={(value) => update('mouth', value)} acceptUndefined={false} value={avatar.mouth}/>
+
+      <AvatarPartSelect part={t('facialHair')} options={facialHairOptions} onChange={(value) => update('facialHair', value)} acceptUndefined={true} value={avatar.facialHair}/>
 
       <div className="flex items-center space-x-2">
         <label className="block font-semibold">{t('eyeColor')}</label>
@@ -174,6 +99,18 @@ export default function AvatarCustomizer({avatar, update, saveAvatar}: Props) {
           type="color"
           value={avatar.eyeColor}
           onChange={(e) => update('eyeColor', e.target.value)}
+          className="w-5 h-5 border-1 border-gray-300 rounded"
+        />
+      </div>
+
+      <AvatarPartSelect part={t('accessory')} options={accessories} onChange={(value) => update('accessory', value)} acceptUndefined={true} value={avatar.accessory}/>
+
+      <div className="flex items-center space-x-2">
+        <label className="block font-semibold">{t('accessoryColor')}</label>
+        <input
+          type="color"
+          value={avatar.accessoryColor}
+          onChange={(e) => update('accessoryColor', e.target.value)}
           className="w-5 h-5 border-1 border-gray-300 rounded"
         />
       </div>

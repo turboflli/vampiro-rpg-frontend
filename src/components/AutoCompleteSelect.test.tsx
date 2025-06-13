@@ -65,7 +65,7 @@ describe('AutoCompleteSelect', () => {
     fireEvent.focus(input);
     fireEvent.change(input, { target: { value: 'NonExistent' } });
 
-    expect(screen.getByText('Nenhuma opção encontrada')).toBeInTheDocument();
+    expect(screen.getByText('noOptions')).toBeInTheDocument();
   });
 
   test('closes dropdown when clicking outside', () => {
