@@ -55,6 +55,7 @@ export default function DiceRollTable() {
             min="1"
             max="15"
             value={numberOfDice}
+            data-testid="number-dice-input"
             onChange={(e) => setNumberOfDice(Number(e.target.value))}
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
           />
@@ -104,6 +105,7 @@ export default function DiceRollTable() {
           <div className="grid grid-cols-3 gap-2">
             {rolls.map((roll, index) => (
               <div
+                data-testid="dice-result"
                 key={index}
                 className={`p-2 text-center rounded-lg ${
                   roll.isSuccess ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'

@@ -46,9 +46,9 @@ export default function AvatarPartSelect({ part, options, onChange, acceptUndefi
 
     return (
         <div className="flex items-center space-x-2">
-            <button onClick={optionBack}><ChevronLeft className="w-5 h-5" /></button>
+            <button onClick={optionBack} aria-label="optionBack"><ChevronLeft className="w-5 h-5" /></button>
             <label className="block font-semibold">{part}</label>
-            <button onClick={optionFoward}><ChevronRight className="w-5 h-5" /></button>
+            <button onClick={optionFoward} aria-label="optionFoward"><ChevronRight className="w-5 h-5" /></button>
         </div>
     );
 }

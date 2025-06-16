@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for frontend/src/services/avatarService.ts</title>
+    <title>Code coverage report for frontend/src/components/Login.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">frontend/src/services</a> avatarService.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">frontend/src/components</a> Login.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/28</span>
+                <span class='fraction'>0/29</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/28</span>
+                <span class='fraction'>0/29</span>
             </div>
         
             
@@ -94,15 +94,10 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -111,9 +106,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -125,37 +121,50 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
-import { Avatar } from "../types/avatar";
-<span class="cstat-no" title="statement not covered" >import { getToken } from "../utils/auth";</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useNavigate } from "react-router-dom";<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
+<span class="cstat-no" title="statement not covered" >import { saveToken } from "../utils/auth";</span>
+<span class="cstat-no" title="statement not covered" >import { useState } from "react";</span>
+<span class="cstat-no" title="statement not covered" >import { login } from "../services/loginService";</span>
+<span class="cstat-no" title="statement not covered" >import { useTranslation } from "react-i18next";</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export async function createAvatar(dto: Avatar) {</span>
-<span class="cstat-no" title="statement not covered" >  const res = await fetch(`${API_BASE_URL}/avatars/save`, {</span>
-<span class="cstat-no" title="statement not covered" >    method: "POST",</span>
-<span class="cstat-no" title="statement not covered" >    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` },</span>
-<span class="cstat-no" title="statement not covered" >    body: JSON.stringify(dto),</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
-<span class="cstat-no" title="statement not covered" >  if (!res.ok) throw new Error("Erro ao criar avatar");</span>
-<span class="cstat-no" title="statement not covered" >  return res.json() as Promise&lt;Avatar&gt;;</span>
-<span class="cstat-no" title="statement not covered" >}   </span>
+<span class="cstat-no" title="statement not covered" >export default function Login() {</span>
+<span class="cstat-no" title="statement not covered" >  const { t } = useTranslation();</span>
+<span class="cstat-no" title="statement not covered" >  const navigate = useNavigate();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export async function updateAvatar(dto: Avatar) {</span>
-<span class="cstat-no" title="statement not covered" >  const res = await fetch(`${API_BASE_URL}/avatars/update`, {</span>
-<span class="cstat-no" title="statement not covered" >    method: "PUT",</span>
-<span class="cstat-no" title="statement not covered" >    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` },</span>
-<span class="cstat-no" title="statement not covered" >    body: JSON.stringify(dto),</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
-<span class="cstat-no" title="statement not covered" >  if (!res.ok) throw new Error("Erro ao atualizar avatar");</span>
-<span class="cstat-no" title="statement not covered" >  return res.json() as Promise&lt;Avatar&gt;;</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" >  const [username, setUsername] = useState("");</span>
+<span class="cstat-no" title="statement not covered" >  const [password, setPassword] = useState("");</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export async function getAvatar(id: number) {</span>
-<span class="cstat-no" title="statement not covered" >  const res = await fetch(`${API_BASE_URL}/avatars/find/${id}`, {</span>
-<span class="cstat-no" title="statement not covered" >    method: "GET",</span>
-<span class="cstat-no" title="statement not covered" >    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` },</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
-<span class="cstat-no" title="statement not covered" >  if (!res.ok) throw new Error("Erro ao buscar avatar");</span>
-<span class="cstat-no" title="statement not covered" >  return res.json() as Promise&lt;Avatar&gt;;</span>
+<span class="cstat-no" title="statement not covered" >  const handleSubmit = async (e: React.FormEvent) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    e.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >    const res = await login(username, password);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (res) {</span>
+<span class="cstat-no" title="statement not covered" >      saveToken(res.token);</span>
+<span class="cstat-no" title="statement not covered" >      navigate("/");</span>
+<span class="cstat-no" title="statement not covered" >    } else {</span>
+<span class="cstat-no" title="statement not covered" >      alert(t("login.error"));</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >  };</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return (</span>
+<span class="cstat-no" title="statement not covered" >    &lt;form onSubmit={handleSubmit} className="w-4/12 mx-auto p-6 bg-white shadow-2xl rounded-lg text-black"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;div className="mb-4 flex flex-col items-center gap-4"&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;input type="text" placeholder={t("username")} className="border p-2" value={username} onChange={(e) =&gt; setUsername(e.target.value)}/&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;input type="password" placeholder={t("password")} className="border p-2" value={password} onChange={(e) =&gt; setPassword(e.target.value)}/&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;button type="submit" className="bg-blue-500 text-white p-2"&gt;{t("login")}&lt;/button&gt;      </span>
+<span class="cstat-no" title="statement not covered" >        &lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;/form&gt;</span>
+  );
 <span class="cstat-no" title="statement not covered" >}</span></pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
