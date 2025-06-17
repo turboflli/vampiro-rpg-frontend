@@ -58,17 +58,17 @@ export default function CreateCharacterForm({ form, update, selectedClan, setSel
     }
   };
 
-  const addDisciplina = () => {
+  const addDiscipline = () => {
     update("disciplines", [...form.disciplines, { name: "", score: 0 }]);
   };
 
-  const updateDisciplina = (i: number, field: keyof Discipline, value: number) => {
+  const updateDiscipline = (i: number, field: keyof Discipline, value: number) => {
     const copy = [...form.disciplines];
     (copy[i][field] as any) = value;
     update("disciplines", copy);
   };
 
-  const removeDisciplina = (i: number) => {
+  const removeDiscipline = (i: number) => {
     const copy = [...form.disciplines];
     copy.splice(i, 1);
     update("disciplines", copy);
@@ -324,13 +324,13 @@ export default function CreateCharacterForm({ form, update, selectedClan, setSel
         <div className="grid grid-cols-2 gap-4 ">
           {form.disciplines.map((d, i) => (
             <div key={i} className="flex gap-4 mb-2">
-              <input className="border p-2 rounded bg-white flex-1" placeholder={t('discipline')} value={d.name} onChange={e => updateDisciplina(i, "name", e.target.value as unknown as number)} />
-              <DotRating value={d.score} onChange={v => updateDisciplina(i, "score", v)} />
-              <button type="button" onClick={() => removeDisciplina(i)} className="text-red-500"><Trash size={16} /></button>
+              <input className="border p-2 rounded bg-white flex-1" placeholder={t('discipline')} value={d.name} onChange={e => updateDiscipline(i, "name", e.target.value as unknown as number)} />
+              <DotRating value={d.score} onChange={v => updateDiscipline(i, "score", v)} />
+              <button type="button" onClick={() => removeDiscipline(i)} className="text-red-500" data-testid="remove-discipline"><Trash size={16} /></button>
             </div>
           ))}
         </div>
-        <button type="button" onClick={addDisciplina} className="mt-2 text-blue-600 flex items-center gap-2"><Plus size={16} /> {t('discipline')}</button>
+        <button type="button" onClick={addDiscipline} className="mt-2 text-blue-600 flex items-center gap-2"><Plus size={16} /> {t('discipline')}</button>
       </fieldset>
 
       <fieldset className="mt-6">
@@ -340,7 +340,7 @@ export default function CreateCharacterForm({ form, update, selectedClan, setSel
             <div key={i} className="flex gap-4 mb-2">
               <input className="border p-2 rounded bg-white flex-1" placeholder={t('background')} value={d.name} onChange={e => updateBackground(i, "name", e.target.value as unknown as number)} />
               <DotRating value={d.score} onChange={v => updateBackground(i, "score", v)} maxValue={5}/>
-              <button type="button" onClick={() => removeBackground(i)} className="text-red-500"><Trash size={16} /></button>
+              <button type="button" onClick={() => removeBackground(i)} className="text-red-500" data-testid="remove-background"><Trash size={16} /></button>
             </div>
           ))}
         </div>
@@ -396,7 +396,7 @@ export default function CreateCharacterForm({ form, update, selectedClan, setSel
                   <input className="border p-2 rounded bg-white flex-1" placeholder={t('merit')} value={m.name} onChange={e => updateMerit(i, "name", e.target.value as unknown as number)} />
                   <TraitTypeSelect onChange={v => updateMerit(i, "type", v)} value={m.type} />
                   <DotRating value={m.score} onChange={v => updateMerit(i, "score", v)} maxValue={5} />
-                  <button type="button" onClick={() => removeMerit(i)} className="text-red-500 font-bold"><Trash size={16} /></button>
+                  <button type="button" onClick={() => removeMerit(i)} className="text-red-500 font-bold" data-testid="remove-merit"><Trash size={16} /></button>
                 </div>
               ))}
               <button type="button" onClick={addMerit} className="mt-2 text-blue-600 flex items-center gap-2"><Plus size={16} /> {t('merit')}</button>
@@ -408,7 +408,7 @@ export default function CreateCharacterForm({ form, update, selectedClan, setSel
                   <input className="border p-2 rounded bg-white flex-1" placeholder={t('flaw')} value={f.name} onChange={e => updateFlaw(i, "name", e.target.value as unknown as number)} />
                   <TraitTypeSelect onChange={v => updateFlaw(i, "type", v)} value={f.type} />
                   <DotRating value={f.score} onChange={v => updateFlaw(i, "score", v)} maxValue={5} />
-                  <button type="button" onClick={() => removeFlaw(i)} className="text-red-500 font-bold"><Trash size={16} /></button>
+                  <button type="button" onClick={() => removeFlaw(i)} className="text-red-500 font-bold" data-testid="remove-flaw"><Trash size={16} /></button>
                 </div>
               ))}
               <button type="button" onClick={addFlaw} className="mt-2 text-blue-600 flex items-center gap-2"><Plus size={16} /> {t('flaw')}</button>
