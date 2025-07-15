@@ -56,6 +56,10 @@ select:focus-visible {
   outline: none; /* Remove the black border */
 }
 
+ul {
+  list-style-type: circle; /* Changes the bullet to a circle */
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -39,6 +39,7 @@ export interface Road{
 }
 
 export interface CharacterSummary{
+    id : number;
     name : string;
     clanName : string;
     roadName : string;

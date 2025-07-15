@@ -11,6 +11,7 @@ import type { Avatar } from "../types/avatar";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from 'react-router-dom'
 import { Undo2 } from 'lucide-react';
+import CharacterDomainsList from './CharacterDomainsList';
 
 export default function CharacterTab() {
   const { t } = useTranslation();
@@ -98,14 +99,13 @@ export default function CharacterTab() {
 
   return (
     <div>
-      <Link to="/" className="flex items-center text-blue-600 hover:underline">
-        <Undo2 className="h-5 w-5 mr-2" />
-        {t('back')}
-      </Link>
       <div className="flex justify-center gap-6 mt-10">
       <AvatarCustomizer avatar={avatar} update={updateAvatarField} saveAvatar={saveAvatar}/>
       <CreateCharacterForm form={form} update={updateCharacterField} roads={roads} clans={clans} selectedClan={selectedClan} setSelectedClan={setSelectedClan} selectedRoad={selectedRoad} setSelectedRoad={setSelectedRoad} saveCharacter={saveCharacter}/>
-      <DiceRollTable />
+      <div className="flex flex-col gap-6">
+        <DiceRollTable />
+        {id && <CharacterDomainsList characterId={Number(id)}/>}
+      </div>
       </div>
     </div>
   );

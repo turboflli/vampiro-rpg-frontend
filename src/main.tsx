@@ -5,14 +5,18 @@ import CharacterTab from './components/CharacterTab.tsx'
 import React from 'react'
 import './index.css';
 import "./i18n"; // importa a configuração de idiomas
-import LanguageSelector from './components/LanguageSelector';
 import Login from './components/Login';
 import PrivateRoute from './routes/PrivateRoute';
+import DomainList from './components/DomainList';
+import DomainForm from './components/DomainForm';
+import PlaceList from './components/PlaceList';
+import PlaceForm from './components/PlaceForm';
+import Menu from './components/Menu.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-    <LanguageSelector />
+    <Menu />
     <Routes>
     <Route path="/login" element={<Login />} />
     <Route
@@ -36,6 +40,54 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       element={
         <PrivateRoute>
           <CharacterTab />
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/domain"
+      element={
+        <PrivateRoute>
+          <DomainList />
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/createDomain"
+      element={
+        <PrivateRoute>
+          <DomainForm />
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/editDomain/:id"
+      element={
+        <PrivateRoute>
+          <DomainForm />
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/place"
+      element={
+        <PrivateRoute>
+          <PlaceList />
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/createPlace"
+      element={
+        <PrivateRoute>
+          <PlaceForm />
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/editPlace/:id"
+      element={
+        <PrivateRoute>
+          <PlaceForm />
         </PrivateRoute>
       }
     />

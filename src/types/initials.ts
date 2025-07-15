@@ -1,5 +1,7 @@
 import { Character } from "./character";
 import { Avatar } from "./avatar";
+import { Routine } from "./routine";
+import { Domain, Place } from "./place";
 
 export const initialCharacter: Character = {
     id: undefined,
@@ -24,6 +26,7 @@ export const initialCharacter: Character = {
 };
 
 export const initialAvatar: Avatar = {
+    id: undefined,
     hairColor: '#2c1b18',
     skinColor: 'ffdbb4',
     accessory: undefined,
@@ -35,4 +38,33 @@ export const initialAvatar: Avatar = {
     mouth: 'smile',
     facialHair: undefined,
     eyeColor: '#3377ff',
+};
+
+export const initialRoutine: Routine = {
+    id: undefined,
+    characterId: undefined,
+    placeId: undefined,
+    weekday: 0,
+    startTime: "18:00",
+    endTime: "06:00",
+    description: "Em casa",
+};
+
+export const initialPlace: Place = {
+    id: undefined,
+    name: "",
+    description: "",
+    x_coordinate: null,
+    y_coordinate: null,
+    type: "Outro",
+    image: "",
+    domainId: undefined,
+    subPlaces: [],
+};
+
+export const initialDomain: Domain = {
+    id: undefined,
+    name: "",
+    color: "#FF0000",
+    characterId: undefined,
 };

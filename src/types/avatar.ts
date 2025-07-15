@@ -7,7 +7,7 @@ export type FacialHairType = 'beardLight' | 'beardMajestic' | 'beardMedium' | 'm
 
 
 export interface Avatar{
-    id : number;
+    id : number | undefined;
     hairColor : string;
     skinColor : string;
     accessory : AccessoryType | undefined;

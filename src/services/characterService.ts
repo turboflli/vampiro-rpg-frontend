@@ -58,6 +58,15 @@ export async function getSummary() {
   return res.json() as Promise<CharacterSummary[]>;
 }
 
+export async function getSpecificSummary(id: number) {
+  const res = await fetch(`${API_BASE_URL}/characters/summary/${id}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error("Erro ao buscar resumo");
+  return res.json() as Promise<CharacterSummary>;
+}
+
 export async function getAllClans() {
   const res = await fetch(`${API_BASE_URL}/extra/clans`, {
     method: "GET",

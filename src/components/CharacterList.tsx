@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
 import { CharacterSummary } from "../types/character";
 import { getCharacterByName, getSummary } from "../services/characterService";
+import { getAllCharactersIds } from "../services/placeService";
 import { Link } from 'react-router-dom'
-import { Plus } from 'lucide-react'
+import { Crown, Plus } from 'lucide-react'
 import { useTranslation } from "react-i18next";
 
 export default function CharacterList() {
 
     const [characters, setCharacters] = useState<CharacterSummary[]>([]);
+    const [domainOwnersIds, setDomainOwnersIds] = useState<number[]>([]);
     const { t } = useTranslation();
 
     useEffect(() => {
         getSummary()
             .then(data => setCharacters(data))
             .catch(() => alert("Erro ao buscar resumo"));
+        getAllCharactersIds()
+            .then(data => setDomainOwnersIds(data))
+            .catch(() => alert("Erro ao buscar ids de personagens"));
     }, []);
 
     const findCharacterByName = (name: string) => {
@@ -37,14 +42,18 @@ export default function CharacterList() {
             <input type="text" placeholder={t("searchCharacter")} onChange={e => {
                 const timeout = setTimeout(() => findCharacterByName(e.target.value), 500);
                 return () => clearTimeout(timeout);
-            }}/>
+            }} className="w-full p-2 border border-gray-300 rounded mb-4"/>
             <div className="grid grid-cols-2 gap-4">
                 {characters.map(character => (
                     <Link to={`/edit/${character.id}`} key={character.id} className="border p-4 rounded hover:bg-gray-100">
-                        <h2 className="text-lg font-semibold">{character.name}</h2>
+                        <h2 className="flex items-center gap-2 text-lg font-semibold">
+                            {character.name}
+                            {domainOwnersIds.includes(character.id) && 
+                            <Crown className="h-5 w-5 text-yellow-300" />}
+                        </h2>
                         <p>{t("clan")}: {character.clanName} - 
                         {t("road")}: {character.roadName} - 
-                        {t("generation")}: {character.generation}</p>
+                        {t("generation")}: {character.generation}ª</p>
                     </Link>
                 ))}
             </div>
