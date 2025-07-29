@@ -60,5 +60,7 @@
     "Metro": "Metro",
     "Marítimo": "Marítimo",
     "Abandonado": "Abandonado",
-    "Outro": "Outro"
+    "Outro": "Outro",
+    "distance": "Distância",
+    "remove": "Remover Bloco"
 }

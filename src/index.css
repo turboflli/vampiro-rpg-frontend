@@ -52,6 +52,11 @@ button:focus-visible {
   outline: none; /* Remove the black border */
 }
 
+button.selected {
+  background-color: #bfc1f0;
+  border-color: #646cff;
+}
+
 select:focus-visible {
   outline: none; /* Remove the black border */
 }

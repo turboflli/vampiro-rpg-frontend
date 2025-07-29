@@ -60,5 +60,7 @@
     "Metro": "Subway",
     "Marítimo": "Maritime",
     "Abandonado": "Abandoned",
-    "Outro": "Other"
+    "Outro": "Other",
+    "distance": "Distance",
+    "remove": "Remove Block"
 }

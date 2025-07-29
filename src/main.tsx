@@ -12,6 +12,8 @@ import DomainForm from './components/DomainForm';
 import PlaceList from './components/PlaceList';
 import PlaceForm from './components/PlaceForm';
 import Menu from './components/Menu.tsx'
+import Map from './components/map.tsx'
+import 'leaflet/dist/leaflet.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -88,6 +90,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       element={
         <PrivateRoute>
           <PlaceForm />
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/map"
+      element={
+        <PrivateRoute>
+          <Map />
         </PrivateRoute>
       }
     />
