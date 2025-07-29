@@ -27,5 +27,5 @@ export async function deleteBlock(id: number) {
     headers: { "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` },
   });
   if (!res.ok) throw new Error("Erro ao deletar bloco");
-  return res.json() as Promise<void>;
+  return;
 }

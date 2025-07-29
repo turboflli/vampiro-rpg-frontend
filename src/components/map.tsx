@@ -8,31 +8,24 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { renderToStaticMarkup } from "react-dom/server";
 import PlaceIconType from "./PlaceIconType";
-import { PenLine, RulerDimensionLine, Save, Trash, Undo } from "lucide-react";
+import { Grid, PenLine, RulerDimensionLine, Save, Trash, Undo } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-// Função que converte suas coordenadas para o CRS.Simple
-function toLatLng(x: number, y: number) {
-    const lat = y*10
-    const lng = x*10
-    return L.latLng(lat, lng); // Leaflet usa (lat, lng) == (y, x)
-}
 
 const lines = [];
 
 // Grade vertical
-for (let x = -2000; x <= 2000; x += 100) {
+for (let x = -200; x <= 200; x += 10) {
   lines.push([
-    [2000, x],
-    [-2000, x],
+    [200, x],
+    [-200, x],
   ]);
 }
 
 // Grade horizontal
-for (let y = -2000; y <= 2000; y += 100) {
+for (let y = -200; y <= 200; y += 10) {
   lines.push([
-    [y, -2000],
-    [y, 2000],
+    [y, -200],
+    [y, 200],
   ]);
 }
 
@@ -56,6 +49,7 @@ export default function Map() {
     const [activedFunction, setActivedFunction] = useState<string>("ruler");
     const [coordinates, setCoordinates] = useState<L.LatLng[]>([]);
     const [blocks, setBlocks] = useState<Block[]>([]);
+    const [grid, setGrid] = useState<boolean>(false);
 
     useEffect(() => {
         getAllPlaces()
@@ -106,6 +100,9 @@ export default function Map() {
                     <button onClick={() => setCoordinates([])} className="bg-red-500 hover:bg-red-600 text-white rounded">
                         <Trash className="h-5 w-5" />
                     </button>
+                    <button onClick={() => setGrid(!grid)} className={`bg-${grid ? "blue-500" : "gray-500"} hover:bg-${grid ? "blue-600" : "gray-600"} text-white rounded`}>
+                        <Grid className="h-5 w-5" />
+                    </button>
                 </div>
             );
         }
@@ -121,8 +118,22 @@ export default function Map() {
     }
 
     const handlePenClickMap = (e: L.LeafletEvent) => {
-        e.latlng.lng = Math.round(e.latlng.lng);
-        e.latlng.lat = Math.round(e.latlng.lat);
+        var lng = Math.round(e.latlng.lng);
+        var lat = Math.round(e.latlng.lat);
+        if (grid) {
+            if (lng % 10 > 5) {
+                lng = Math.round((lng + 5) / 10) * 10;
+            } else {
+                lng = Math.round((lng - 5) / 10) * 10;
+            }
+            if (lat % 10 > 5) {
+                lat = Math.round((lat + 5) / 10) * 10;
+            } else {
+                lat = Math.round((lat - 5) / 10) * 10;
+            }
+        }
+        e.latlng.lng = lng;
+        e.latlng.lat = lat;
         setCoordinates([...coordinates, e.latlng]);
     }
 
@@ -236,7 +247,7 @@ export default function Map() {
 
     const renderPlaces = () => {
         return places.map((place, i) => (
-            <Marker key={i} position={toLatLng(place.x_coordinate!, place.y_coordinate!)} icon={getLucideIcon(place)}
+            <Marker key={i} position={L.latLng(place.y_coordinate!, place.x_coordinate!)} icon={getLucideIcon(place)}
             eventHandlers={{
                 click: () => handleClick(place),
             }}
@@ -263,16 +274,16 @@ export default function Map() {
                 )}
                 <MapContainer
                 center={[0, 0]}
-                zoom={-1}
+                zoom={1}
                 style={{ height: "90%", width: "100%", border: "1px solid gray", backgroundColor: "#ffffff" }}
                 minZoom={-5}
                 maxZoom={5}
                 crs={L.CRS.Simple}
-                maxBounds={L.latLngBounds([[-2100, -2100], [2100, 2100]])}
+                maxBounds={L.latLngBounds([[-210, -210], [210, 210]])}
                 >
                 {renderLines()}
-                <Polyline positions={[[0, -2000], [0, 2000]]} pathOptions={{ color: "black", weight: 2 }} />
-                <Polyline positions={[[-2000, 0], [2000, 0]]} pathOptions={{ color: "black", weight: 2 }} />
+                <Polyline positions={[[0, -200], [0, 200]]} pathOptions={{ color: "black", weight: 2 }} />
+                <Polyline positions={[[-200, 0], [200, 0]]} pathOptions={{ color: "black", weight: 2 }} />
                 {renderBlocks()}
                 {renderPlaces()}
                 {selectedIds.length > 1 && (
