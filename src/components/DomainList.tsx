@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { Domain } from "../types/place";
-import { getAllDomains, getDomainByName } from "../services/placeService";
+import { getAllDomains, getDomainByName, deleteDomain } from "../services/placeService";
 import { Link } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 import { CharacterSummary } from "../types/character";
 import { getSpecificSummary } from "../services/characterService";
 
@@ -44,6 +44,16 @@ export default function DomainList() {
         return `${character.name} - ${character.clanName} - ${character.roadName} - ${character.generation}ª`;
     }
     
+    const removeDomain = (id: number) => {
+        deleteDomain(id)
+            .then(() => {
+                getAllDomains()
+                    .then(data => setDomains(data))
+                    .catch(() => alert("Erro ao buscar domínios"));
+            })
+            .catch(() => alert("Erro ao deletar domínio"));
+    }
+    
     return (
         <div className="max-w-6xl mx-auto p-6 bg-white shadow-2xl rounded-lg mt-10 text-black">
             <h1 className="text-2xl font-bold text-center mb-6">{t("titleDomain")}</h1>
@@ -56,10 +66,15 @@ export default function DomainList() {
             }} className="w-full p-2 border border-gray-300 rounded mb-4"/>
             <div className="grid grid-cols-2 gap-4">
                 {domains.map(domain => (
-                    <Link to={`/editDomain/${domain.id}`} key={domain.id} className="border border-solid border-2 p-4 rounded hover:bg-gray-100" style={{ borderColor: domain.color }}>
+                    <div key={domain.id} className="relative border border-solid border-2 p-4 rounded hover:bg-gray-100" style={{ borderColor: domain.color }}>
+                    <Link to={`/editDomain/${domain.id}`} >
                         <h2 className="text-lg font-semibold">{domain.name}</h2>
-                        <p>{t("character")}: {buildLabel(domain.characterId)}</p>
                     </Link>
+                    <p>{t("character")}: {buildLabel(domain.characterId)}</p>
+                    <button onClick={() => removeDomain(domain.id!)} className="bg-red-500 hover:bg-red-600 text-white rounded absolute z-10 bottom-2 right-2">
+                        <Trash className="h-5 w-5" />
+                    </button>
+                    </div>
                 ))}
             </div>
         </div>

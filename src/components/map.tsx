@@ -83,7 +83,7 @@ export default function Map() {
             html: `<div style="padding:2px;width:32px;height:32px;border-radius:50%;border:${selectedBorder}">${svgString}</div>`,
             className: "", // remove estilo padrão do Leaflet
             iconSize: [36, 36],
-            iconAnchor: [12, 0],
+            iconAnchor: [13, 13],
         });
     }
 

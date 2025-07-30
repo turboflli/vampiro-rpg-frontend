@@ -50,6 +50,15 @@ export async function getPlaceByName(name: string) {
   return res.json() as Promise<Place[]>;
 }
 
+export async function deletePlace(id: number) {
+  const res = await fetch(`${API_BASE_URL}/places/delete/${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error("Erro ao deletar lugar");
+  return;
+}
+
 export async function getPlaceByDomainId(id: number) {
   const res = await fetch(`${API_BASE_URL}/places/domain/${id}`, {
     method: "GET",
@@ -122,6 +131,15 @@ export async function getDomainByCharacterId(id: number) {
   });
   if (!res.ok) throw new Error("Erro ao buscar domínio");
   return res.json() as Promise<Domain[]>;
+}
+
+export async function deleteDomain(id: number) {
+  const res = await fetch(`${API_BASE_URL}/domains/delete/${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error("Erro ao deletar domínio");
+  return;
 }
 
     

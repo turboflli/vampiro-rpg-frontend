@@ -29,6 +29,7 @@ export default function Menu() {
                 <option value="/createDomain">{t("newDomain")}</option>
                 <option value="/place">{t("places")}</option>
                 <option value="/createPlace">{t("newPlace")}</option>
+                <option value="/map">{t("map")}</option>
             </select>
         </div>
         <LanguageSelector />

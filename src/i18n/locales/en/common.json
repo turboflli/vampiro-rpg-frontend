@@ -108,5 +108,6 @@
     "experience": "Experience",
     "login": "Login",
     "username": "Username",
-    "password": "Password"
+    "password": "Password",
+    "deleteCharacterConfirm": "Are you sure you want to delete this character?"
 }

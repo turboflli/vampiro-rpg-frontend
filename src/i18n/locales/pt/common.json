@@ -108,5 +108,6 @@
     "experience": "Experiência",
     "login": "Entrar",
     "username": "Usuário",
-    "password": "Senha"
+    "password": "Senha",
+    "deleteCharacterConfirm": "Tem certeza que deseja deletar este personagem?"
 }

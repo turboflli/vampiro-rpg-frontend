@@ -67,6 +67,14 @@ export async function getSpecificSummary(id: number) {
   return res.json() as Promise<CharacterSummary>;
 }
 
+export async function deleteCharacter(id: number) {
+  const res = await fetch(`${API_BASE_URL}/characters/delete/${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error("Erro ao deletar personagem");
+}
+
 export async function getAllClans() {
   const res = await fetch(`${API_BASE_URL}/extra/clans`, {
     method: "GET",
