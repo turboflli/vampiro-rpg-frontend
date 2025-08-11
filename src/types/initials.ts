@@ -44,7 +44,7 @@ export const initialRoutine: Routine = {
     id: undefined,
     characterId: undefined,
     placeId: undefined,
-    weekday: 0,
+    weekday: 2,
     startTime: "18:00",
     endTime: "06:00",
     description: "Em casa",

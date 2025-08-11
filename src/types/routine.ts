@@ -7,3 +7,8 @@ export interface Routine{
     endTime : string;
     description : string;
 }
+
+export interface RoutineExibition extends Routine {
+    characterName : string;
+    placeName : string;
+}

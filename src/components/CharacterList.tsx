@@ -3,11 +3,13 @@ import { CharacterSummary } from "../types/character";
 import { deleteCharacter, getCharacterByName, getSummary } from "../services/characterService";
 import { getAllCharactersIds } from "../services/placeService";
 import { Link } from 'react-router-dom'
-import { Crown, Plus, Trash } from 'lucide-react'
+import { CalendarPlus, CalendarSearch, Crown, Plus, Trash } from 'lucide-react'
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 export default function CharacterList() {
 
+    const navigate = useNavigate();
     const [characters, setCharacters] = useState<CharacterSummary[]>([]);
     const [domainOwnersIds, setDomainOwnersIds] = useState<number[]>([]);
     const { t } = useTranslation();
@@ -71,6 +73,12 @@ export default function CharacterList() {
                     {t("generation")}: {character.generation}ª</p>
                     <button onClick={() => removeCharacter(character.id!)} className="bg-red-500 hover:bg-red-600 text-white rounded absolute z-10 bottom-2 right-2">
                         <Trash className="h-5 w-5" />
+                    </button>
+                    <button onClick={() => navigate(`/createRoutine/character/${character.id}`)} className="bg-green-500 hover:bg-green-600 text-white rounded absolute z-10 bottom-2 right-8">
+                        <CalendarPlus className="h-5 w-5" />
+                    </button>
+                    <button onClick={() => navigate(`/routine/character/${character.id}`)} className="bg-blue-500 hover:bg-blue-600 text-white rounded absolute z-10 bottom-2 right-14">
+                        <CalendarSearch className="h-5 w-5" />
                     </button>
                     </div>
                 ))}

@@ -12,7 +12,7 @@ export default function Menu() {
     };
     return (
         <div className="flex justify-between">
-        <div className="w-[200px] flex justify-start p-4 bg-slate-100 text-sm">
+        <div className="w-1/2 flex justify-start p-4 bg-slate-100 text-sm">
             <label htmlFor="menu" className="mr-2 font-medium flex items-center">
                 <AlignJustify className="mr-1 h-4 w-4" />
             </label>
@@ -30,6 +30,8 @@ export default function Menu() {
                 <option value="/place">{t("places")}</option>
                 <option value="/createPlace">{t("newPlace")}</option>
                 <option value="/map">{t("map")}</option>
+                <option value="/routine">{t("routine")}</option>
+                <option value="/createRoutine">{t("newRoutine")}</option>
             </select>
         </div>
         <LanguageSelector />

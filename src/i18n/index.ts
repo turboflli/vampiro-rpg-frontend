@@ -8,13 +8,15 @@ import ptMenu from "./locales/pt/menu.json";
 import enMenu from "./locales/en/menu.json";
 import ptPlace from "./locales/pt/place.json";
 import enPlace from "./locales/en/place.json";
+import ptRoutine from "./locales/pt/routine.json";
+import enRoutine from "./locales/en/routine.json";
 
 i18n.use(initReactI18next).init({
-  ns: ['common', 'avatar', 'menu', 'place'],
+  ns: ['common', 'avatar', 'menu', 'place', 'routine'],
   defaultNS: 'common',
   resources: {
-    pt: { common: pt, avatar: ptAvatar, menu: ptMenu, place: ptPlace },
-    en: { common: en, avatar: enAvatar, menu: enMenu, place: enPlace }
+    pt: { common: pt, avatar: ptAvatar, menu: ptMenu, place: ptPlace, routine: ptRoutine },
+    en: { common: en, avatar: enAvatar, menu: enMenu, place: enPlace, routine: enRoutine }
   },
   lng: "pt", // idioma padrão
   fallbackLng: "pt",

@@ -14,6 +14,8 @@ import PlaceForm from './components/PlaceForm';
 import Menu from './components/Menu.tsx'
 import Map from './components/map.tsx'
 import 'leaflet/dist/leaflet.css';
+import RoutineForm from './components/RoutineForm.tsx'
+import RoutineList from './components/RoutineList.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -98,6 +100,48 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       element={
         <PrivateRoute>
           <Map />
+        </PrivateRoute>
+      }
+    />
+    <Route path="/routine" element={
+        <PrivateRoute>
+          <RoutineList />
+        </PrivateRoute>
+      }
+    />
+    <Route path="/routine/character/:characterId" element={
+        <PrivateRoute>
+          <RoutineList />
+        </PrivateRoute>
+      }
+    />
+    <Route path="/routine/place/:placeId" element={
+        <PrivateRoute>
+          <RoutineList />
+        </PrivateRoute>
+      }
+    />
+    <Route path="/createRoutine" element={
+        <PrivateRoute>
+          <RoutineForm />
+        </PrivateRoute>
+      }
+    />
+    <Route path="/createRoutine/character/:characterId" element={
+        <PrivateRoute>
+          <RoutineForm />
+        </PrivateRoute>
+      }
+    />
+    <Route path="/createRoutine/place/:placeId" element={
+        <PrivateRoute>
+          <RoutineForm />
+        </PrivateRoute>
+      }
+    />
+    <Route path="/editRoutine/:id" element={
+        <PrivateRoute>
+          <RoutineForm />
         </PrivateRoute>
       }
     />

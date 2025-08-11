@@ -1,12 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { Plus, Trash } from "lucide-react";
+import { CalendarPlus, CalendarSearch, Plus, Trash } from "lucide-react";
 import { getAllPlaces, getPlaceByName, getAllDomains, deletePlace } from "../services/placeService";
 import { useState, useEffect } from "react";
 import { Place, Domain } from "../types/place";
 import PlaceIconType from "./PlaceIconType";
+import { useNavigate } from "react-router-dom";
 
 export default function PlaceList() {
+    const navigate = useNavigate();
     const { t } = useTranslation("place");
     const [places, setPlaces] = useState<Place[]>([]);
     const [domains, setDomains] = useState<Domain[]>([]);
@@ -95,9 +97,15 @@ export default function PlaceList() {
                       </ul>
                     </div>
                   
-                  <button onClick={() => removePlace(place.id!)} className="bg-red-500 hover:bg-red-600 text-white rounded absolute z-10 bottom-2 right-2">
-                        <Trash className="h-5 w-5" />
-                      </button>
+                    <button onClick={() => removePlace(place.id!)} className="bg-red-500 hover:bg-red-600 text-white rounded absolute z-10 bottom-2 right-2">
+                      <Trash className="h-5 w-5" />
+                    </button>
+                    <button onClick={() => navigate(`/createRoutine/place/${place.id}`)} className="bg-green-500 hover:bg-green-600 text-white rounded absolute z-10 bottom-2 right-8">
+                        <CalendarPlus className="h-5 w-5" />
+                    </button>
+                    <button onClick={() => navigate(`/routine/place/${place.id}`)} className="bg-blue-500 hover:bg-blue-600 text-white rounded absolute z-10 bottom-2 right-14">
+                        <CalendarSearch className="h-5 w-5" />
+                    </button>
                   </div>                  
                 ))}
             </div>

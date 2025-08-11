@@ -5,5 +5,7 @@
     "newDomain": "Novo domínio",
     "places": "Lista de locais",
     "newPlace": "Novo local",
-    "map": "Mapa"
+    "map": "Mapa",
+    "routine": "Lista de rotinas",
+    "newRoutine": "Nova rotina"
 }

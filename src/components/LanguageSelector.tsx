@@ -9,7 +9,7 @@ export default function LanguageSelector() {
   };
 
   return (
-    <div className="w-[200px] flex justify-end p-4 bg-slate-100 text-sm">
+    <div className="w-1/2 flex justify-end p-4 bg-slate-100 text-sm">
       <label htmlFor="lang" className="mr-2 font-medium flex items-center">
         <Globe className="mr-1 h-4 w-4" />
       </label>

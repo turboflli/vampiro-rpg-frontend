@@ -11,7 +11,7 @@ interface AutoCompleteSelectProps<T> {
   onChange: (selected: T | null) => void;
 }
 
-export default function AutoCompleteSelect<T extends { id: number }>({
+export default function AutoCompleteSelect<T extends { id: number | undefined }>({
   label,
   options,
   getLabel,
